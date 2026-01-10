@@ -1,0 +1,273 @@
+/**
+ * StudyLoG.AI - A2UI Widget Styles
+ */
+
+.si-a2ui-widget {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--theia-editor-background);
+}
+
+.si-a2ui-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.si-a2ui-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--theia-toolbar-background);
+  border-bottom: 1px solid var(--theia-panel-border);
+  font-size: 12px;
+}
+
+.si-a2ui-agent {
+  color: var(--theia-foreground);
+}
+
+.si-a2ui-module {
+  color: var(--theia-descriptionForeground);
+  text-transform: capitalize;
+}
+
+/* Content */
+.si-a2ui-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* Placeholder */
+.si-a2ui-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--theia-descriptionForeground);
+  text-align: center;
+}
+
+.si-a2ui-placeholder .si-a2ui-hint {
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+/* Components */
+.si-a2ui-text {
+  margin: 8px 0;
+}
+
+.si-a2ui-input-group,
+.si-a2ui-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.si-a2ui-input-group label,
+.si-a2ui-select-group label {
+  font-size: 12px;
+  color: var(--theia-descriptionForeground);
+}
+
+.si-a2ui-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.si-a2ui-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.si-a2ui-slider input[type="range"] {
+  width: 100%;
+}
+
+.si-a2ui-slider-value {
+  text-align: right;
+  font-size: 12px;
+  color: var(--theia-descriptionForeground);
+}
+
+/* Progress */
+.si-a2ui-progress {
+  margin-bottom: 12px;
+}
+
+.si-a2ui-progress-bar {
+  height: 8px;
+  background: var(--theia-progressBar-background);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 4px 0;
+}
+
+.si-a2ui-progress-fill {
+  height: 100%;
+  background: var(--theia-progressBar-foreground);
+  transition: width 0.3s ease;
+}
+
+.si-a2ui-progress-text {
+  font-size: 12px;
+  color: var(--theia-descriptionForeground);
+}
+
+/* List */
+.si-a2ui-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.si-a2ui-list li {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--theia-panel-border);
+  cursor: pointer;
+}
+
+.si-a2ui-list li:hover {
+  background: var(--theia-list-hoverBackground);
+}
+
+/* Card */
+.si-a2ui-card {
+  background: var(--theia-editor-background);
+  border: 1px solid var(--theia-panel-border);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.si-a2ui-card-title {
+  padding: 12px;
+  margin: 0;
+  border-bottom: 1px solid var(--theia-panel-border);
+  font-size: 14px;
+}
+
+.si-a2ui-card-content {
+  padding: 12px;
+}
+
+.si-a2ui-card-footer {
+  padding: 8px 12px;
+  background: var(--theia-toolbar-background);
+  border-top: 1px solid var(--theia-panel-border);
+  font-size: 12px;
+}
+
+/* Hint */
+.si-a2ui-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.si-a2ui-hint-info {
+  background: var(--theia-editorInfo-background);
+  border: 1px solid var(--theia-editorInfo-border);
+}
+
+.si-a2ui-hint-success {
+  background: var(--theia-editorMarkerNavigationInfo-background);
+}
+
+.si-a2ui-hint-warning {
+  background: var(--theia-editorWarning-background);
+  border: 1px solid var(--theia-editorWarning-border);
+}
+
+.si-a2ui-hint-error {
+  background: var(--theia-editorError-background);
+  border: 1px solid var(--theia-editorError-border);
+}
+
+.si-a2ui-hint-content {
+  flex: 1;
+}
+
+.si-a2ui-hint-content strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.si-a2ui-hint-content p {
+  margin: 0;
+}
+
+.si-a2ui-hint-dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.si-a2ui-hint-dismiss:hover {
+  opacity: 1;
+}
+
+/* Code */
+.si-a2ui-code {
+  background: var(--theia-textCodeBlock-background);
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family: var(--theia-code-font-family);
+  font-size: 13px;
+}
+
+/* Markdown */
+.si-a2ui-markdown {
+  line-height: 1.6;
+}
+
+.si-a2ui-markdown code {
+  background: var(--theia-textCodeBlock-background);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* Container layouts */
+.si-a2ui-container-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.si-a2ui-container-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.si-a2ui-container-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* Unknown component fallback */
+.si-a2ui-unknown {
+  padding: 8px;
+  background: var(--theia-editorWarning-background);
+  border-radius: 4px;
+  font-style: italic;
+}

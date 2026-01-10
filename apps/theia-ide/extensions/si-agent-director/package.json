@@ -1,0 +1,29 @@
+{
+  "name": "@studylog/si-agent-director",
+  "version": "0.1.0",
+  "description": "Agent orchestrator for StudyLoG.AI",
+  "license": "MIT",
+  "keywords": ["theia-extension", "agent", "orchestrator"],
+  "files": ["lib", "src"],
+  "main": "lib/common/index.js",
+  "types": "lib/common/index.d.ts",
+  "dependencies": {
+    "@theia/core": "1.54.0",
+    "@studylog/si-godot-embed": "0.1.0",
+    "@studylog/si-a2ui-renderer": "0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "rimraf": "^6.0.1"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/si-agent-director-frontend-module"
+    }
+  ]
+}
