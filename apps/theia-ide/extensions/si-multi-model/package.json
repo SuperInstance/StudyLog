@@ -1,0 +1,29 @@
+{
+  "name": "@studylog/si-multi-model",
+  "version": "0.1.0",
+  "description": "Multi-model router for StudyLoG.AI - routes to cheapest available LLM with fallbacks",
+  "license": "MIT",
+  "keywords": ["theia-extension", "ai", "multi-model", "llm"],
+  "files": ["lib", "src"],
+  "main": "lib/common/index.js",
+  "types": "lib/common/index.d.ts",
+  "dependencies": {
+    "@theia/core": "1.54.0",
+    "@studylog/si-godot-embed": "0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "rimraf": "^6.0.1"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/si-multi-model-frontend-module",
+      "backend": "lib/node/si-multi-model-backend-module"
+    }
+  ]
+}

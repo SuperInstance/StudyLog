@@ -1,0 +1,54 @@
+{
+  "stages": {
+    "1": {
+      "name": "cognitive_mill",
+      "title": "Cognitive Mill",
+      "unlock_after": "complete_simple_machines_puzzle",
+      "features": ["multi_model_chat", "asset_pipeline", "godot_panel"],
+      "description": "Learn how AI models work through the metaphor of a waterwheel"
+    },
+    "2": {
+      "name": "intelligence_ranch",
+      "title": "Intelligence Ranch",
+      "unlock_after": "train_first_dog_agent",
+      "features": ["agent_dashboard", "lora_training", "breeding_simulation"],
+      "description": "Train and breed AI agents like working dogs"
+    },
+    "3": {
+      "name": "sitka_sound",
+      "title": "Sitka Sound",
+      "unlock_after": "complete_fleet_coordination",
+      "features": ["a2a_fleet", "asymmetrical_info", "game_theory_engine"],
+      "description": "Explore multi-agent systems through fishing fleet simulation"
+    },
+    "4": {
+      "name": "digital_twins",
+      "title": "Digital Twins",
+      "unlock_after": "deploy_edge_model",
+      "features": ["hardware_bridge", "nsight_integration", "dgx_queues"],
+      "description": "Deploy AI to real hardware with NVIDIA acceleration"
+    }
+  },
+  "puzzles": {
+    "complete_simple_machines_puzzle": {
+      "stage": 1,
+      "tasks": ["drag_servo", "add_capacitor", "verify_stability"],
+      "reward": "multi_model_chat_unlock"
+    },
+    "train_first_dog_agent": {
+      "stage": 2,
+      "tasks": ["create_lora_dataset", "train_model", "test_inference"],
+      "reward": "agent_dashboard_unlock"
+    },
+    "complete_fleet_coordination": {
+      "stage": 3,
+      "tasks": ["coordinate_3_boats", "achieve_profit", "trust_analysis"],
+      "reward": "a2a_fleet_unlock"
+    },
+    "deploy_edge_model": {
+      "stage": 4,
+      "tasks": ["compile_platformio", "flash_device", "verify_inference"],
+      "reward": "hardware_bridge_unlock"
+    }
+  }
+}

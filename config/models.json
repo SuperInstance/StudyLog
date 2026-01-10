@@ -1,0 +1,47 @@
+{
+  "providers": {
+    "openai": {
+      "key": "",
+      "models": ["gpt-4o", "gpt-4o-mini"],
+      "base_url": "https://api.openai.com/v1"
+    },
+    "anthropic": {
+      "key": "",
+      "models": ["claude-3-5-sonnet", "claude-3-5-haiku"],
+      "base_url": "https://api.anthropic.com/v1"
+    },
+    "google": {
+      "key": "",
+      "models": ["gemini-1.5-pro", "gemini-1.5-flash"],
+      "base_url": "https://generativelanguage.googleapis.com/v1"
+    },
+    "nvidia": {
+      "key": "",
+      "models": ["llama-3.1-405b", "nemotron-4-340b"],
+      "base_url": "https://integrate.api.nvidia.com/v1"
+    },
+    "ollama": {
+      "url": "http://localhost:11434",
+      "models": ["llama3.1:8b", "nemotron-mini:4b"],
+      "base_url": "http://localhost:11434"
+    }
+  },
+  "routing": {
+    "cheap_first": true,
+    "fallback_chain": ["ollama", "google", "nvidia", "anthropic", "openai"],
+    "cache_ttl": 300,
+    "max_retries": 3
+  },
+  "costs": {
+    "gpt-4o": 0.005,
+    "gpt-4o-mini": 0.00015,
+    "claude-3-5-sonnet": 0.003,
+    "claude-3-5-haiku": 0.00025,
+    "gemini-1.5-pro": 0.00125,
+    "gemini-1.5-flash": 0.000075,
+    "llama-3.1-405b": 0.0004,
+    "nemotron-4-340b": 0.0004,
+    "llama3.1:8b": 0,
+    "nemotron-mini:4b": 0
+  }
+}

@@ -1,0 +1,24 @@
+name = "sleep-trainer"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+# Vectorize for embeddings
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "agent-memories"
+
+# D1 Database for journal entries and training data
+[[d1_databases]]
+binding = "DB"
+database_name = "sleep-trainer"
+database_id = "your_d1_database_id"
+
+# R2 for LoRA weight storage
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "superinstance-lora-weights"
+
+[vars]
+EMBEDDING_MODEL = "text-embedding-3-small"
+LORA_DEFAULT_RANK = "8"
+LORA_DEFAULT_ALPHA = "16"

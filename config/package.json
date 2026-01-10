@@ -1,0 +1,51 @@
+{
+  "name": "superinstance-theia",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "build": "theia build",
+    "start": "theia start",
+    "dev": "concurrently \"npm:watch\" \"npm:serve\"",
+    "watch": "theia build --watch",
+    "serve": "theia start --hostname 0.0.0.0 --port 3000",
+    "package": "electron-builder",
+    "seed:puzzles": "tsx scripts/seed-puzzles.ts",
+    "seed:student": "tsx scripts/seed-student.ts",
+    "deploy:worker": "wrangler deploy --env production",
+    "deploy:pages": "wrangler pages deploy dist --project-name superinstance-theia"
+  },
+  "devDependencies": {
+    "@theia/cli": "^1.44.0",
+    "@types/node": "^20.0.0",
+    "concurrently": "^8.0.0",
+    "electron-builder": "^24.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^3.28.0"
+  },
+  "dependencies": {
+    "@theia/core": "^1.44.0",
+    "@theia/editor": "^1.44.0",
+    "@theia/filesystem": "^1.44.0",
+    "@theia/preferences": "^1.44.0",
+    "@theia/workspace": "^1.44.0",
+    "@theia/monaco": "^1.44.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-flow-renderer": "^10.0.0",
+    "simavr-wasm": "^1.0.0"
+  },
+  "theia": {
+    "frontend": {
+      "config": {
+        "applicationName": "SuperInstance",
+        "defaultTheme": "si-dark",
+        "defaultIconTheme": "si-icons"
+      }
+    }
+  }
+}

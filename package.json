@@ -1,7 +1,7 @@
 {
-  "name": "studylog",
+  "name": "@studylog/monorepo",
   "version": "0.1.0",
-  "description": "StudyLoG.AI - Progressive AI-native IDE that teaches through simulation",
+  "description": "StudyLoG.AI by SuperInstance.AI - Gamified AI/STEM education on a customizable IDE",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -20,7 +20,8 @@
     "setup-ollama": "./scripts/setup-ollama.sh",
     "setup-jetson": "./scripts/setup-jetson.sh",
     "backend:dev": "npm run dev --workspace=backend",
-    "backend:deploy": "npm run deploy --workspace=backend"
+    "backend:deploy": "npm run deploy --workspace=backend",
+    "deploy:workers": "npm run backend:deploy"
   },
   "devDependencies": {
     "turbo": "^2.3.3",
@@ -30,5 +31,5 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "npm@10.0.0"
+  "packageManager": "pnpm@9.0.0"
 }

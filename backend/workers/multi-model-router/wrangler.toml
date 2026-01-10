@@ -1,0 +1,23 @@
+name = "multi-model-router"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+# KV Namespace for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "your_kv_namespace_id"
+preview_id = "your_preview_kv_namespace_id"
+
+# D1 Database for cost tracking
+[[d1_databases]]
+binding = "DB"
+database_name = "multi-model-costs"
+database_id = "your_d1_database_id"
+
+# Environment variables (secrets should be set via `wrangler secret`)
+# Run: wrangler secret put OPENAI_API_KEY
+# Run: wrangler secret put ANTHROPIC_API_KEY
+# etc.
+
+[vars]
+OLLAMA_URL = "http://localhost:11434"

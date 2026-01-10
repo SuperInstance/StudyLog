@@ -1,0 +1,48 @@
+name = "superinstance-skill-mill"
+main = "workers/skill-mill/index.ts"
+compatibility_date = "2024-01-01"
+
+# D1 Database - Student State
+[[d1_databases]]
+binding = "STUDENT_STATE"
+database_name = "superinstance-students-prod"
+database_id = "your-d1-id-here"  # Replace after `wrangler d1 create`
+
+# Vectorize - Puzzle Index
+[[vectorize]]
+binding = "PUZZLE_INDEX"
+index_name = "superinstance-puzzles-prod"
+
+# R2 Storage - Projects & Assets
+[[r2_buckets]]
+binding = "PROJECT_STORAGE"
+bucket_name = "superinstance-projects-prod"
+
+# AI Gateway - Model Routing
+[ai]
+binding = "AI_GATEWAY"
+
+# KV Cache - Gap Vectors & Session
+[[kv_namespaces]]
+binding = "GAP_CACHE"
+id = "your-kv-id-here"  # `wrangler kv:namespace create GAP_CACHE`
+
+# Environment Variables
+[vars]
+ENVIRONMENT = "production"
+MAX_GAP_VECTOR_AGE_HOURS = "1"
+RERANKER_MODEL_VERSION = "v3.2"
+
+# Development environment
+[env.dev]
+name = "superinstance-skill-mill-dev"
+vars = { ENVIRONMENT = "development" }
+
+[[d1_databases]]
+binding = "STUDENT_STATE"
+database_name = "superinstance-students-dev"
+database_id = "your-dev-d1-id-here"
+
+[[vectorize]]
+binding = "PUZZLE_INDEX"
+index_name = "superinstance-puzzles-dev"
