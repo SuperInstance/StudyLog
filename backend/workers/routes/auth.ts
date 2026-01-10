@@ -1,14 +1,24 @@
 /**
  * StudyLoG.AI Backend - Authentication Routes
+ *
+ * SECURITY: This module handles user authentication using JWT tokens.
+ * - Passwords are hashed using SHA-256 with a salt (consider upgrading to bcrypt/argon2)
+ * - JWT tokens are signed with HMAC-SHA256 using JWT_SECRET
+ * - Tokens include expiration, not-before, and revocation support
+ *
+ * TODO: Upgrade password hashing to bcrypt/argon2 for production use.
+ * The current SHA-256 implementation is vulnerable to rainbow table attacks
+ * if the salt is compromised. Use Web Crypto API's PBKDF2 or a dedicated library.
  */
 
 import { Router } from '../router';
 import type { Env } from '../types';
+import { createAuthToken, revokeToken } from '../middleware';
 
 export const authRoutes = new Router();
 
 // POST /register - Create new account
-authRoutes.post('/register', async (request, env) => {
+authRoutes.post('/register', async (request, env: Env) => {
   try {
     const body = await request.json() as {
       email: string;
@@ -25,6 +35,23 @@ authRoutes.post('/register', async (request, env) => {
       );
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return Response.json(
+        { success: false, error: { code: 'INVALID_EMAIL', message: 'Invalid email format' } },
+        { status: 400 }
+      );
+    }
+
+    // Validate password strength (min 8 characters)
+    if (password.length < 8) {
+      return Response.json(
+        { success: false, error: { code: 'WEAK_PASSWORD', message: 'Password must be at least 8 characters' } },
+        { status: 400 }
+      );
+    }
+
     // Check if email exists
     const existing = await env.STUDENT_STATE.prepare(
       'SELECT id FROM students WHERE email = ?'
@@ -37,7 +64,7 @@ authRoutes.post('/register', async (request, env) => {
       );
     }
 
-    // Hash password (in production, use proper bcrypt/argon2)
+    // Hash password
     const passwordHash = await hashPassword(password);
 
     // Create student
@@ -53,13 +80,12 @@ authRoutes.post('/register', async (request, env) => {
       VALUES (?, ?, 'player')
     `).bind(crypto.randomUUID(), id).run();
 
-    // Create session token
-    const token = crypto.randomUUID();
-    await env.SESSION_CACHE.put(
-      `session:${token}`,
-      JSON.stringify({ studentId: id }),
-      { expirationTtl: 86400 * 7 } // 7 days
-    );
+    // Create JWT token with 7-day expiration
+    const token = await createAuthToken(id, env, {
+      roles: ['student'],
+      tier: 'free',
+      expiresIn: 86400 * 7, // 7 days
+    });
 
     return Response.json({
       success: true,
@@ -103,6 +129,7 @@ authRoutes.post('/login', async (request, env) => {
     }>();
 
     if (!student) {
+      // Use generic error message to prevent username enumeration
       return Response.json(
         { success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password' } },
         { status: 401 }
@@ -112,6 +139,7 @@ authRoutes.post('/login', async (request, env) => {
     // Verify password
     const valid = await verifyPassword(password, student.password_hash);
     if (!valid) {
+      // Use generic error message to prevent username enumeration
       return Response.json(
         { success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password' } },
         { status: 401 }
@@ -123,13 +151,12 @@ authRoutes.post('/login', async (request, env) => {
       UPDATE students SET last_login_at = datetime('now') WHERE id = ?
     `).bind(student.id).run();
 
-    // Create session
-    const token = crypto.randomUUID();
-    await env.SESSION_CACHE.put(
-      `session:${token}`,
-      JSON.stringify({ studentId: student.id }),
-      { expirationTtl: 86400 * 7 }
-    );
+    // Create JWT token with user's tier and 7-day expiration
+    const token = await createAuthToken(student.id, env, {
+      roles: ['student'],
+      tier: student.tier,
+      expiresIn: 86400 * 7, // 7 days
+    });
 
     return Response.json({
       success: true,
@@ -157,7 +184,8 @@ authRoutes.post('/logout', async (request, env) => {
   const authHeader = request.headers.get('Authorization');
   if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.slice(7);
-    await env.SESSION_CACHE.delete(`session:${token}`);
+    // Revoke the JWT token by adding it to the revocation cache
+    await revokeToken(token, env);
   }
 
   return Response.json({ success: true });
@@ -165,29 +193,20 @@ authRoutes.post('/logout', async (request, env) => {
 
 // GET /me - Get current user
 authRoutes.get('/me', async (request, env) => {
-  const authHeader = request.headers.get('Authorization');
-  if (!authHeader?.startsWith('Bearer ')) {
+  const { verifyAuth } = await import('../middleware');
+  const auth = await verifyAuth(request, env);
+
+  if (!auth.authenticated) {
     return Response.json(
-      { success: false, error: { code: 'UNAUTHORIZED', message: 'No token provided' } },
-      { status: 401 }
+      { success: false, error: { code: auth.error.code, message: auth.error.message } },
+      { status: auth.error.code === 'MISSING_SECRET' ? 500 : 401 }
     );
   }
 
-  const token = authHeader.slice(7);
-  const session = await env.SESSION_CACHE.get(`session:${token}`);
-
-  if (!session) {
-    return Response.json(
-      { success: false, error: { code: 'INVALID_TOKEN', message: 'Invalid or expired token' } },
-      { status: 401 }
-    );
-  }
-
-  const { studentId } = JSON.parse(session);
   const student = await env.STUDENT_STATE.prepare(`
     SELECT id, email, display_name, tier, created_at
     FROM students WHERE id = ?
-  `).bind(studentId).first();
+  `).bind(auth.result.studentId).first();
 
   if (!student) {
     return Response.json(

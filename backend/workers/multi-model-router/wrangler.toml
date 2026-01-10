@@ -1,23 +1,111 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Multi-Model Router Worker Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Routes LLM requests to the cheapest available provider with fallback support,
+# response caching in KV, and cost tracking. Integrates with first-mile-router
+# for cascade-based intent classification.
+#
+# Deployment: wrangler publish (from this directory)
+# Secrets: wrangler secret put <KEY> (e.g., OPENAI_API_KEY)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
 name = "multi-model-router"
 main = "index.ts"
 compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
 
-# KV Namespace for caching
+# ═══════════════════════════════════════════════════════════════════════════════
+# KV Namespace - Response Caching
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Caches LLM responses to avoid redundant API calls. Cache key is based on
+# model, messages, temperature, and max_tokens.
+#
+# Setup: Run backend/scripts/setup-kv.sh and update IDs below
+# ═══════════════════════════════════════════════════════════════════════════════
+
 [[kv_namespaces]]
 binding = "CACHE"
-id = "your_kv_namespace_id"
-preview_id = "your_preview_kv_namespace_id"
+id = "your_kv_namespace_id"  # Update with actual ID from setup-kv.sh
+preview_id = "your_preview_kv_namespace_id"  # Update with actual ID
 
-# D1 Database for cost tracking
+# ═══════════════════════════════════════════════════════════════════════════════
+# D1 Database - Cost Tracking
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Tracks API usage costs per user, provider, and model. Also stores cascade
+# savings metrics when intent-based routing is enabled.
+#
+# Schema: backend/workers/multi-model-router/schema.sql
+# Setup: Run backend/scripts/setup-d1.sh and update ID below
+# ═══════════════════════════════════════════════════════════════════════════════
+
 [[d1_databases]]
 binding = "DB"
 database_name = "multi-model-costs"
-database_id = "your_d1_database_id"
+database_id = "your_d1_database_id"  # Update with actual ID from setup-d1.sh
 
-# Environment variables (secrets should be set via `wrangler secret`)
-# Run: wrangler secret put OPENAI_API_KEY
-# Run: wrangler secret put ANTHROPIC_API_KEY
-# etc.
+# ═══════════════════════════════════════════════════════════════════════════════
+# Environment Variables (Public)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# These are visible in deployment. Use secrets for sensitive values.
+# ═══════════════════════════════════════════════════════════════════════════════
 
 [vars]
+# URL to local Ollama instance (for development/testing)
 OLLAMA_URL = "http://localhost:11434"
+
+# Enable cascade routing (intent-based classification from first-mile-router)
+# Set to "true" to enable, omit or "false" to disable
+CASCADING_ENABLED = "true"
+
+# URL to first-mile-router for intent classification
+# Deploy first-mile-router first, then update this URL
+FIRST_MILE_ROUTER_URL = "https://first-mile-router.studylog.workers.dev"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Secrets (Set via: wrangler secret put <KEY>)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# API keys for LLM providers. Only configure providers you have access to.
+# The router will use available providers in the fallback chain order.
+#
+# Commands (run from this directory):
+#   wrangler secret put ZHIPU_API_KEY
+#   wrangler secret put DEEPSEEK_API_KEY
+#   wrangler secret put OPENAI_API_KEY
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put GOOGLE_API_KEY
+#   wrangler secret put NVIDIA_API_KEY
+#
+# Example values (paste when prompted):
+#   ZHIPU_API_KEY: 1234.abcdef1234567890  (format: {id}.{secret})
+#   DEEPSEEK_API_KEY: sk-...
+#   OPENAI_API_KEY: sk-...
+#   ANTHROPIC_API_KEY: sk-ant-...
+#   GOOGLE_API_KEY: AIza...
+#   NVIDIA_API_KEY: nvapi-...
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# Deployment Notes
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# 1. First-time setup:
+#    - Run backend/scripts/setup-d1.sh to create D1 database
+#    - Run backend/scripts/setup-kv.sh to create KV namespace
+#    - Update the IDs above with the output from those scripts
+#
+# 2. Set secrets:
+#    - cd backend/workers/multi-model-router
+#    - wrangler secret put OPENAI_API_KEY (repeat for each provider)
+#
+# 3. Deploy:
+#    - wrangler publish
+#
+# 4. Deploy order: This worker has no dependencies, but is typically deployed
+#    after first-mile-router since it references it for cascade routing.
+#
+# ═══════════════════════════════════════════════════════════════════════════════

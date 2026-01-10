@@ -1,0 +1,16 @@
+# Numba CUDA Kernels Requirements
+# For StudyLoG.AI STEM acceleration tools
+
+# Core dependencies
+numpy>=1.24.0
+numba>=0.59.0
+
+# CUDA support (install one based on your CUDA version)
+# For CUDA 11.x: pip install numba-cuda11x
+# For CUDA 12.x: pip install numba-cuda12x
+# numba-cuda12x>=0.0.13  # Uncomment after installing Numba
+
+# Optional: for FastAPI server wrapper
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0

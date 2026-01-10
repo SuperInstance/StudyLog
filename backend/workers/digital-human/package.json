@@ -1,0 +1,47 @@
+{
+  "name": "@studylog/digital-human-worker",
+  "version": "0.1.0",
+  "description": "NVIDIA Digital Human integration for StudyLoG.AI - ACE, Maxine, Audio2Face",
+  "license": "MIT",
+  "keywords": [
+    "digital-human",
+    "nvidia",
+    "ace",
+    "maxine",
+    "audio2face",
+    "avatar",
+    "tutor",
+    "studylog"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rimraf dist",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "typescript": "^5.7.3",
+    "rimraf": "^6.0.1",
+    "vitest": "^2.1.8",
+    "eslint": "^9.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

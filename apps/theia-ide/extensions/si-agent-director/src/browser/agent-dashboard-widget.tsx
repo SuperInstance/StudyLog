@@ -10,6 +10,7 @@ import { inject, injectable } from '@theia/core/shared/inversify';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { AgentDashboardFrontendService } from './agent-dashboard-frontend-service';
 import { Message } from '@theia/core/lib/browser/widgets/widget';
+import { MessageService } from '@theia/core/lib/common/message-service';
 
 export interface AgentInfo {
   id: string;
@@ -39,7 +40,35 @@ export interface DashboardState {
   totalCost: number;
   totalTokens: number;
   selectedAgent?: string;
+  showDialog: boolean;
+  dialogError?: string;
 }
+
+/**
+ * Agent type options for the creation form
+ */
+const AGENT_TYPES = [
+  { value: 'slm', label: 'Small Language Model (Deckhand)', defaultModel: 'nemotron-mini:4b' },
+  { value: 'director_agent', label: 'Director Agent (Captain)', defaultModel: 'llama-3.1-70b' },
+  { value: 'orchestrator', label: 'Orchestrator (Whale)', defaultModel: 'claude-opus-4-5' },
+  { value: 'vector_swarm', label: 'Vector Swarm (Herring)', defaultModel: 'text-embedding-3-small' },
+] as const;
+
+/**
+ * Available model options for each agent type
+ */
+const MODEL_OPTIONS = [
+  'nemotron-mini:4b',
+  'llama-3.1-8b',
+  'llama-3.1-70b',
+  'claude-haiku-4-5',
+  'claude-sonnet-4-5',
+  'claude-opus-4-5',
+  'gpt-4o-mini',
+  'gpt-4o',
+  'text-embedding-3-small',
+  'text-embedding-3-large',
+] as const;
 
 @injectable()
 export class AgentDashboardWidget extends ReactWidget {
@@ -49,6 +78,17 @@ export class AgentDashboardWidget extends ReactWidget {
   @inject(AgentDashboardFrontendService)
   protected readonly service: AgentDashboardFrontendService;
 
+  @inject(MessageService)
+  protected readonly messageService: MessageService;
+
+  /**
+   * Dialog state for the Add Agent form
+   * These are separate from dashboard state as they're only used during dialog interaction
+   */
+  private dialogName = '';
+  private dialogType: AgentInfo['type'] = 'slm';
+  private dialogModel = '';
+
   protected state: DashboardState = {
     agents: [],
     currentStage: 1,
@@ -56,6 +96,8 @@ export class AgentDashboardWidget extends ReactWidget {
     totalCost: 0,
     totalTokens: 0,
     selectedAgent: undefined,
+    showDialog: false,
+    dialogError: undefined,
   };
 
   private updateInterval: ReturnType<typeof setInterval> | null = null;
@@ -120,6 +162,9 @@ export class AgentDashboardWidget extends ReactWidget {
             ))}
           </div>
         </div>
+
+        {/* Add Agent Dialog Overlay */}
+        {this.state.showDialog && this.renderAddAgentDialog()}
 
         {/* Stats Summary */}
         <div className="dashboard-stats">
@@ -265,9 +310,250 @@ export class AgentDashboardWidget extends ReactWidget {
     });
   }
 
+  /**
+   * Show the Add Agent dialog.
+   *
+   * UI Flow:
+   * 1. User clicks "Add Agent" button
+   * 2. Dialog opens with empty form
+   * 3. User fills in agent details
+   * 4. User clicks Create or Cancel
+   *
+   * Future enhancements:
+   * - Agent templates/presets dropdown
+   * - Import from file/URL
+   * - Clone existing agent
+   */
   private showAddAgentDialog(): void {
-    // TODO: Implement dialog
-    console.log('[AgentDashboard] Show add agent dialog');
+    // Reset dialog state
+    this.dialogName = '';
+    this.dialogType = 'slm';
+    this.dialogModel = '';
+    this.setState({ showDialog: true, dialogError: undefined });
+  }
+
+  /**
+   * Hide the Add Agent dialog.
+   */
+  private hideAddAgentDialog(): void {
+    this.setState({ showDialog: false, dialogError: undefined });
+  }
+
+  /**
+   * Handle form submission for creating a new agent.
+   *
+   * Flow:
+   * 1. Validate form inputs
+   * 2. Call service.createAgent()
+   * 3. On success: show success message, refresh agent list, close dialog
+   * 4. On error: display error in dialog
+   */
+  private async handleCreateAgent(): Promise<void> {
+    // Client-side validation
+    if (!this.dialogName.trim()) {
+      this.setState({ dialogError: 'Agent name is required' });
+      return;
+    }
+
+    // Check for duplicate names
+    const nameExists = this.state.agents.some(
+      (a) => a.name.toLowerCase() === this.dialogName.toLowerCase()
+    );
+    if (nameExists) {
+      this.setState({ dialogError: `An agent named "${this.dialogName}" already exists` });
+      return;
+    }
+
+    try {
+      // Call service to create the agent
+      await this.service.createAgent({
+        name: this.dialogName,
+        type: this.dialogType,
+        model: this.dialogModel || undefined,
+      });
+
+      // Show success feedback
+      this.messageService.info(`Agent "${this.dialogName}" created successfully`);
+
+      // Refresh agent list
+      const agents = await this.service.getAgents();
+      this.setState({
+        agents,
+        showDialog: false,
+        dialogError: undefined,
+      });
+    } catch (error) {
+      // Display error in dialog
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create agent';
+      this.setState({ dialogError: errorMessage });
+    }
+  }
+
+  /**
+   * Render the Add Agent dialog modal.
+   *
+   * UI Components:
+   * - Modal overlay with centered dialog
+   * - Form fields: Agent Name (text), Agent Type (select), Model (select)
+   * - Validation error display
+   * - Action buttons: Cancel, Create
+   *
+   * Future enhancements:
+   * - Agent personality configuration
+   * - Permission settings
+   * - Resource limits (tokens, cost)
+   * - Auto-start toggle
+   */
+  private renderAddAgentDialog(): React.ReactNode {
+    // Get default model for selected type
+    const defaultModel = AGENT_TYPES.find((t) => t.value === this.dialogType)?.defaultModel || '';
+    const modelValue = this.dialogModel || defaultModel;
+
+    return (
+      <div className="si-dialog-overlay" onClick={(e) => {
+        // Close on overlay click (but not when clicking dialog content)
+        if (e.target === e.currentTarget) {
+          this.hideAddAgentDialog();
+        }
+      }}>
+        <div className="si-dialog">
+          {/* Dialog Header */}
+          <div className="si-dialog-header">
+            <h3>Add New Agent</h3>
+            <button
+              className="si-dialog-close"
+              onClick={() => this.hideAddAgentDialog()}
+              aria-label="Close dialog"
+            >
+              <i className="fa fa-times" />
+            </button>
+          </div>
+
+          {/* Dialog Body - Form */}
+          <div className="si-dialog-body">
+            {/* Validation Error */}
+            {this.state.dialogError && (
+              <div className="si-dialog-error">
+                <i className="fa fa-exclamation-circle" />
+                <span>{this.state.dialogError}</span>
+              </div>
+            )}
+
+            {/* Agent Name Field */}
+            <div className="si-form-field">
+              <label htmlFor="agent-name">
+                Agent Name <span className="required">*</span>
+              </label>
+              <input
+                id="agent-name"
+                type="text"
+                className="si-form-input"
+                placeholder="e.g., My Assistant"
+                value={this.dialogName}
+                onChange={(e) => {
+                  this.dialogName = e.target.value;
+                  // Clear error when user starts typing
+                  if (this.state.dialogError) {
+                    this.setState({ dialogError: undefined });
+                  }
+                  this.update();
+                }}
+                onKeyDown={(e) => {
+                  // Submit on Enter key
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.handleCreateAgent();
+                  }
+                }}
+                autoFocus
+              />
+              <small className="si-form-hint">
+                Unique name for this agent (no duplicates)
+              </small>
+            </div>
+
+            {/* Agent Type Field */}
+            <div className="si-form-field">
+              <label htmlFor="agent-type">
+                Agent Type <span className="required">*</span>
+              </label>
+              <select
+                id="agent-type"
+                className="si-form-select"
+                value={this.dialogType}
+                onChange={(e) => {
+                  this.dialogType = e.target.value as AgentInfo['type'];
+                  // Reset model when type changes (will use new default)
+                  this.dialogModel = '';
+                  this.update();
+                }}
+              >
+                {AGENT_TYPES.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <small className="si-form-hint">
+                Determines the agent's capabilities and default model
+              </small>
+            </div>
+
+            {/* Model Field */}
+            <div className="si-form-field">
+              <label htmlFor="agent-model">Model</label>
+              <select
+                id="agent-model"
+                className="si-form-select"
+                value={modelValue}
+                onChange={(e) => {
+                  this.dialogModel = e.target.value;
+                  this.update();
+                }}
+              >
+                <option value="">Default: {defaultModel}</option>
+                {MODEL_OPTIONS.map((model) => (
+                  <option key={model} value={model}>
+                    {model}
+                  </option>
+                ))}
+              </select>
+              <small className="si-form-hint">
+                AI model to use (empty = default for type)
+              </small>
+            </div>
+
+            {/* Future Enhancement Hints */}
+            <div className="si-form-notice">
+              <i className="fa fa-info-circle" />
+              <span>
+                Future: Configure personality, permissions, and resource limits after creation
+              </span>
+            </div>
+          </div>
+
+          {/* Dialog Footer - Action Buttons */}
+          <div className="si-dialog-footer">
+            <button
+              className="si-button secondary"
+              onClick={() => this.hideAddAgentDialog()}
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              className="si-button primary"
+              onClick={() => this.handleCreateAgent()}
+              disabled={!this.dialogName.trim()}
+              type="button"
+            >
+              <i className="fa fa-plus" />
+              Create Agent
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   private setState(partial: Partial<DashboardState>): void {

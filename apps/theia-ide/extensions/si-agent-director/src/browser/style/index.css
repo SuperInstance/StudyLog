@@ -196,3 +196,256 @@
 .si-director-input button {
   min-width: 40px;
 }
+
+/* ═══════════════════════════════════════════════════════════
+ * Add Agent Dialog Styles
+ * ═══════════════════════════════════════════════════════════ */
+
+/**
+ * Dialog overlay - semi-transparent backdrop
+ */
+.si-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/**
+ * Main dialog container
+ */
+.si-dialog {
+  background: var(--theia-editor-background);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 400px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/**
+ * Dialog header with title and close button
+ */
+.si-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--theia-panel-border);
+  background: var(--theia-toolbar-background);
+}
+
+.si-dialog-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--theia-foreground);
+}
+
+.si-dialog-close {
+  background: none;
+  border: none;
+  color: var(--theia-ui-font-color2);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.si-dialog-close:hover {
+  background: var(--theia-widget-selectionBorder);
+  color: var(--theia-foreground);
+}
+
+/**
+ * Dialog body containing form fields
+ */
+.si-dialog-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/**
+ * Form field container
+ */
+.si-form-field {
+  margin-bottom: 16px;
+}
+
+.si-form-field:last-of-type {
+  margin-bottom: 0;
+}
+
+.si-form-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--theia-foreground);
+  margin-bottom: 6px;
+}
+
+.si-form-field .required {
+  color: var(--theia-editorError-foreground);
+}
+
+.si-form-input,
+.si-form-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--theia-panel-border);
+  border-radius: 4px;
+  background: var(--theia-editor-background);
+  color: var(--theia-foreground);
+  font-size: 13px;
+  transition: border-color 0.15s ease;
+}
+
+.si-form-input:focus,
+.si-form-select:focus {
+  outline: none;
+  border-color: var(--theia-accent-color3);
+}
+
+.si-form-input::placeholder {
+  color: var(--theia-ui-font-color2);
+}
+
+.si-form-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--theia-ui-font-color2);
+}
+
+/**
+ * Form notice/info box
+ */
+.si-form-notice {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--theia-sideBar-background);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--theia-ui-font-color1);
+  margin-top: 16px;
+}
+
+.si-form-notice i {
+  color: var(--theia-accent-color3);
+}
+
+/**
+ * Validation error display
+ */
+.si-dialog-error {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--theia-editorError-background);
+  border: 1px solid var(--theia-editorError-border);
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--theia-editorError-foreground);
+}
+
+.si-dialog-error i {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/**
+ * Dialog footer with action buttons
+ */
+.si-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--theia-panel-border);
+  background: var(--theia-toolbar-background);
+}
+
+/**
+ * Button styles
+ */
+.si-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.si-button.primary {
+  background: var(--theia-button-background);
+  color: var(--theia-button-foreground);
+}
+
+.si-button.primary:hover:not(:disabled) {
+  background: var(--theia-button-hoverBackground);
+}
+
+.si-button.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.si-button.secondary {
+  background: transparent;
+  color: var(--theia-ui-font-color1);
+  border: 1px solid var(--theia-panel-border);
+}
+
+.si-button.secondary:hover {
+  background: var(--theia-widget-selectionBorder);
+}
+
+/**
+ * Add Agent button in dashboard
+ */
+.add-agent-btn {
+  width: 100%;
+  padding: 10px 16px;
+  margin-top: 12px;
+  background: var(--theia-button-background);
+  color: var(--theia-button-foreground);
+  border: 1px solid var(--theia-button-border);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.add-agent-btn:hover {
+  background: var(--theia-button-hoverBackground);
+}
+
+.add-agent-btn:active {
+  transform: translateY(-1px);
+}

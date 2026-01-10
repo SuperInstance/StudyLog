@@ -14,7 +14,7 @@ const MAX_PROJECT_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_ASSET_SIZE = 50 * 1024 * 1024; // 50MB
 
 // POST /project/upload - Upload project file
-assetRoutes.post('/project/upload', async (request, env) => {
+assetRoutes.post('/project/upload', async (request, env: Env) => {
   const auth = await requireAuth(request, env);
   if (auth instanceof Response) return auth;
 
@@ -27,18 +27,43 @@ assetRoutes.post('/project/upload', async (request, env) => {
   }
 
   const formData = await request.formData();
-  const file = formData.get('file') as File;
-  const path = formData.get('path') as string;
+  const fileValue = formData.get('file');
+  const pathValue = formData.get('path');
 
-  if (!file || !path) {
+  if (typeof pathValue !== 'string') {
     return Response.json(
-      { success: false, error: { code: 'INVALID_INPUT', message: 'file and path required' } },
+      { success: false, error: { code: 'INVALID_INPUT', message: 'path must be a string' } },
       { status: 400 }
     );
   }
 
+  // Check if fileValue is a File object (check for File-like properties)
+  const isFile = fileValue !== null &&
+    typeof fileValue === 'object' &&
+    'name' in fileValue &&
+    'type' in fileValue &&
+    'size' in fileValue &&
+    'stream' in fileValue;
+
+  if (!isFile && fileValue !== null) {
+    return Response.json(
+      { success: false, error: { code: 'INVALID_INPUT', message: 'file must be a File' } },
+      { status: 400 }
+    );
+  }
+
+  if (fileValue === null) {
+    return Response.json(
+      { success: false, error: { code: 'INVALID_INPUT', message: 'file is required' } },
+      { status: 400 }
+    );
+  }
+
+  // At this point, fileValue is a File-like object
+  const file = fileValue as { name: string; type: string; size: number; stream: () => ReadableStream };
+
   // Sanitize path
-  const safePath = sanitizePath(path);
+  const safePath = sanitizePath(pathValue);
   const key = `${auth.studentId}/${safePath}`;
 
   await env.PROJECT_STORAGE.put(key, file.stream(), {
@@ -88,13 +113,17 @@ assetRoutes.get('/project/list', async (request, env) => {
 
   const url = new URL(request.url);
   const prefix = url.searchParams.get('prefix') || '';
-  const cursor = url.searchParams.get('cursor') || undefined;
+  const cursorParam = url.searchParams.get('cursor');
 
-  const listed = await env.PROJECT_STORAGE.list({
+  const listOptions: R2ListOptions = {
     prefix: `${auth.studentId}/${prefix}`,
-    cursor,
     limit: 100,
-  });
+  };
+  if (cursorParam) {
+    listOptions.cursor = cursorParam;
+  }
+
+  const listed = await env.PROJECT_STORAGE.list(listOptions);
 
   const files = listed.objects.map((obj) => ({
     path: obj.key.replace(`${auth.studentId}/`, ''),
@@ -126,8 +155,14 @@ assetRoutes.delete('/project/delete/:path+', async (request, env, _ctx, params) 
 });
 
 // GET /asset/:path - Get public game asset
-assetRoutes.get('/asset/:path+', async (request, env, _ctx, params) => {
+assetRoutes.get('/asset/:path+', async (_request, env, _ctx, params) => {
   const path = params['path+'];
+  if (!path) {
+    return Response.json(
+      { success: false, error: { code: 'NOT_FOUND', message: 'Path required' } },
+      { status: 400 }
+    );
+  }
 
   // Assets are public, no auth required
   const object = await env.ASSET_STORAGE.get(path);
@@ -164,17 +199,42 @@ assetRoutes.post('/asset/upload', async (request, env) => {
   }
 
   const formData = await request.formData();
-  const file = formData.get('file') as File;
-  const path = formData.get('path') as string;
+  const fileValue = formData.get('file');
+  const pathValue = formData.get('path');
 
-  if (!file || !path) {
+  if (typeof pathValue !== 'string') {
     return Response.json(
-      { success: false, error: { code: 'INVALID_INPUT', message: 'file and path required' } },
+      { success: false, error: { code: 'INVALID_INPUT', message: 'path must be a string' } },
       { status: 400 }
     );
   }
 
-  const safePath = sanitizePath(path);
+  // Check if fileValue is a File object (check for File-like properties)
+  const isFile = fileValue !== null &&
+    typeof fileValue === 'object' &&
+    'name' in fileValue &&
+    'type' in fileValue &&
+    'size' in fileValue &&
+    'stream' in fileValue;
+
+  if (!isFile && fileValue !== null) {
+    return Response.json(
+      { success: false, error: { code: 'INVALID_INPUT', message: 'file must be a File' } },
+      { status: 400 }
+    );
+  }
+
+  if (fileValue === null) {
+    return Response.json(
+      { success: false, error: { code: 'INVALID_INPUT', message: 'file is required' } },
+      { status: 400 }
+    );
+  }
+
+  // At this point, fileValue is a File-like object
+  const file = fileValue as { name: string; type: string; size: number; stream: () => ReadableStream };
+
+  const safePath = sanitizePath(pathValue);
 
   await env.ASSET_STORAGE.put(safePath, file.stream(), {
     httpMetadata: {

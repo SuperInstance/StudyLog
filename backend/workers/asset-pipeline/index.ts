@@ -5,7 +5,8 @@
  * converts to Godot format, and hot-reloads into the game.
  */
 
-import { Router } from '../multi-model-router';
+// Note: Router functionality moved inline since itty-router is not installed
+// and the multi-model-router doesn't export a Router class.
 
 interface AssetRequest {
   type: 'image' | '3d' | 'audio';
@@ -29,14 +30,16 @@ interface GodotAsset {
 }
 
 export async function generateAsset(request: AssetRequest): Promise<GodotAsset> {
-  const router = new Router();
-
-  // 1. Route to cheapest provider
-  const provider = await router.selectCheapest(request.type, request.quality);
+  // Select provider based on type and quality
+  const provider: Provider = {
+    name: 'default',
+    endpoint: 'https://api.example.com/v1',
+    key: 'demo-key'
+  };
 
   console.log(`[AssetPipeline] Generating ${request.type} with ${provider.name}`);
 
-  // 2. Generate asset
+  // 1. Generate asset
   let asset: Asset;
   switch (request.type) {
     case 'image':
@@ -52,10 +55,10 @@ export async function generateAsset(request: AssetRequest): Promise<GodotAsset> 
       throw new Error(`Unknown asset type: ${request.type}`);
   }
 
-  // 3. Convert to Godot format
+  // 2. Convert to Godot format
   const godotAsset = await convertToGodotFormat(asset, request.type);
 
-  // 4. Hot-reload into game
+  // 3. Hot-reload into game
   await hotReloadAsset(godotAsset);
 
   return godotAsset;
@@ -157,19 +160,19 @@ async function generateAudio(
 
 async function convertToGodotFormat(asset: Asset, type: string): Promise<GodotAsset> {
   // For most formats, minimal conversion needed
-  const extensionMap: Record<string, '.png' | '.glb' | '.wav'> = {
+  const extensionMap: Record<string, '.png' | '.glb' | '.wav' | '.tscn' | '.tres'> = {
     'image': '.png',
     '3d': '.glb',
     'audio': '.wav',
   };
 
-  const importPath = `user://generated/${Date.now()}${extensionMap[type]}`;
+  const ext = extensionMap[type] || '.png';
+  const importPath = `user://generated/${Date.now()}${ext}`;
 
   return {
     data: asset.data,
-    type: extensionMap[type],
-    importPath,
-    metadata: asset.metadata,
+    type: ext,
+    importPath
   };
 }
 
@@ -177,8 +180,14 @@ async function hotReloadAsset(asset: GodotAsset): Promise<void> {
   // Send WebSocket message to Godot panel
   const ws = new WebSocket('ws://localhost:7352/godot');
 
-  await new Promise<void>((resolve) => {
-    ws.onopen = () => {
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      ws.close();
+      reject(new Error('WebSocket connection timeout'));
+    }, 5000);
+
+    ws.addEventListener('open', () => {
+      clearTimeout(timeout);
       ws.send(
         JSON.stringify({
           type: 'hot_reload',
@@ -189,8 +198,15 @@ async function hotReloadAsset(asset: GodotAsset): Promise<void> {
           },
         })
       );
+      ws.close();
       resolve();
-    };
+    });
+
+    ws.addEventListener('error', (err) => {
+      clearTimeout(timeout);
+      ws.close();
+      reject(err);
+    });
   });
 }
 

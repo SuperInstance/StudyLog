@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G-Assist Widget - Vanilla JS Example</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #eee;
+    }
+
+    .g-assist-container {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .g-assist-widget {
+      background: rgba(26, 26, 46, 0.95);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+
+    .g-assist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: rgba(99, 102, 241, 0.1);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .g-assist-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .g-assist-title .icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .g-assist-cost {
+      font-size: 12px;
+      color: #888;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    .g-assist-messages {
+      height: 350px;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .g-assist-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .g-assist-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .g-assist-messages::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.3);
+      border-radius: 3px;
+    }
+
+    .g-assist-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .g-assist-empty .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .g-assist-message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      animation: messageIn 0.3s ease-out;
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .g-assist-message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .g-assist-message.assistant {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom-left-radius: 4px;
+    }
+
+    .g-assist-message-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+
+    .g-assist-message-content {
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .g-assist-message-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      opacity: 0.5;
+      margin-top: 6px;
+    }
+
+    .g-assist-input-area {
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .g-assist-transcript {
+      font-size: 12px;
+      color: #6366f1;
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+
+    .g-assist-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .g-assist-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #eee;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .g-assist-input:focus {
+      border-color: #6366f1;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .g-assist-input::placeholder {
+      color: #666;
+    }
+
+    .g-assist-input:disabled {
+      opacity: 0.5;
+    }
+
+    .g-assist-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #eee;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .g-assist-btn:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.05);
+    }
+
+    .g-assist-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .g-assist-btn.voice.recording {
+      background: #ef4444;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .g-assist-send-btn {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    }
+
+    .g-assist-send-btn:hover:not(:disabled) {
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .g-assist-error {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 8px;
+    }
+
+    .g-assist-typing {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+    }
+
+    .g-assist-typing span {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: typing 1.4s infinite;
+    }
+
+    .g-assist-typing span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .g-assist-typing span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .g-assist-model-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .g-assist-model-btn {
+      padding: 6px 12px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 16px;
+      background: transparent;
+      color: #888;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .g-assist-model-btn.active {
+      background: rgba(99, 102, 241, 0.2);
+      color: #6366f1;
+      border-color: #6366f1;
+    }
+
+    .g-assist-model-btn:hover:not(.active) {
+      border-color: rgba(99, 102, 241, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="g-assist-container">
+    <div class="g-assist-widget" id="g-assist-widget">
+      <!-- Header -->
+      <div class="g-assist-header">
+        <div class="g-assist-title">
+          <div class="icon">AI</div>
+          <span>G-Assist</span>
+        </div>
+        <div class="g-assist-cost" id="cost-display">Cost: 0.00c</div>
+      </div>
+
+      <!-- Messages -->
+      <div class="g-assist-messages" id="messages-container">
+        <div class="g-assist-empty">
+          <div class="icon">💬</div>
+          <div>Ask me anything about AI, coding, or simulations!</div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="g-assist-input-area">
+        <!-- Model Selector -->
+        <div class="g-assist-model-selector" id="model-selector">
+          <button class="g-assist-model-btn active" data-model="claude-3-5-haiku">Haiku</button>
+          <button class="g-assist-model-btn" data-model="claude-3-5-sonnet">Sonnet</button>
+          <button class="g-assist-model-btn" data-model="llama-3.3-70b">Llama</button>
+        </div>
+
+        <!-- Voice Transcript -->
+        <div class="g-assist-transcript" id="transcript"></div>
+
+        <!-- Input Row -->
+        <div class="g-assist-input-row">
+          <input
+            type="text"
+            class="g-assist-input"
+            id="message-input"
+            placeholder="Ask a question..."
+            autocomplete="off"
+          />
+          <button class="g-assist-btn voice" id="voice-btn" title="Voice input">
+            🎤
+          </button>
+          <button class="g-assist-btn" id="reset-btn" title="Reset cost">
+            🔄
+          </button>
+          <button class="g-assist-btn g-assist-send-btn" id="send-btn" title="Send">
+            ➤
+          </button>
+        </div>
+
+        <!-- Error Display -->
+        <div class="g-assist-error" id="error-display" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // Configuration
+    // ═══════════════════════════════════════════════════════════════
+
+    const CONFIG = {
+      apiUrl: 'http://localhost:8787',
+      defaultModel: 'claude-3-5-haiku',
+      enableVoice: true,
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // State
+    // ═══════════════════════════════════════════════════════════════
+
+    const state = {
+      messages: [],
+      totalCost: 0,
+      currentModel: CONFIG.defaultModel,
+      isLoading: false,
+      isRecording: false,
+      mediaRecorder: null,
+      audioChunks: [],
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // DOM Elements
+    // ═══════════════════════════════════════════════════════════════
+
+    const elements = {
+      messagesContainer: document.getElementById('messages-container'),
+      messageInput: document.getElementById('message-input'),
+      sendBtn: document.getElementById('send-btn'),
+      voiceBtn: document.getElementById('voice-btn'),
+      resetBtn: document.getElementById('reset-btn'),
+      costDisplay: document.getElementById('cost-display'),
+      errorDisplay: document.getElementById('error-display'),
+      transcript: document.getElementById('transcript'),
+      modelSelector: document.getElementById('model-selector'),
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // API Functions
+    // ═══════════════════════════════════════════════════════════════
+
+    async function sendMessage(message) {
+      state.isLoading = true;
+      updateUI();
+
+      // Add user message
+      addMessage('user', message);
+
+      // Add typing indicator
+      const typingId = addTypingIndicator();
+
+      try {
+        const response = await fetch(`${CONFIG.apiUrl}/api/v1/g-assist/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message,
+            model: state.currentModel,
+            temperature: 0.7,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Remove typing indicator
+        removeTypingIndicator(typingId);
+
+        // Add assistant message
+        addMessage('assistant', data.content, data.model, data.cost);
+
+        // Update cost
+        state.totalCost += data.cost;
+        updateCostDisplay();
+
+        // Clear input
+        elements.messageInput.value = '';
+        hideError();
+
+      } catch (error) {
+        removeTypingIndicator(typingId);
+        showError(error.message || 'Failed to get response');
+      } finally {
+        state.isLoading = false;
+        updateUI();
+      }
+    }
+
+    async function resetCost() {
+      try {
+        await fetch(`${CONFIG.apiUrl}/api/v1/costs/reset`, { method: 'POST' });
+        state.totalCost = 0;
+        updateCostDisplay();
+      } catch (error) {
+        showError('Failed to reset cost');
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Voice Input
+    // ═══════════════════════════════════════════════════════════════
+
+    async function startVoiceInput() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        state.mediaRecorder = new MediaRecorder(stream);
+        state.audioChunks = [];
+
+        state.mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            state.audioChunks.push(event.data);
+          }
+        };
+
+        state.mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(state.audioChunks, { type: 'audio/webm' });
+          await transcribeAudio(audioBlob);
+        };
+
+        state.mediaRecorder.start();
+        state.isRecording = true;
+        updateVoiceButton();
+      } catch (error) {
+        showError('Could not access microphone');
+      }
+    }
+
+    function stopVoiceInput() {
+      if (state.mediaRecorder && state.isRecording) {
+        state.mediaRecorder.stop();
+        state.mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        state.isRecording = false;
+        updateVoiceButton();
+      }
+    }
+
+    async function transcribeAudio(audioBlob) {
+      elements.transcript.textContent = 'Transcribing...';
+
+      try {
+        const arrayBuffer = await audioBlob.arrayBuffer();
+        const base64 = btoa(
+          new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+        );
+
+        const response = await fetch(`${CONFIG.apiUrl}/api/v1/g-assist/stt`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ audioData: base64 }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Transcription failed');
+        }
+
+        const data = await response.json();
+        elements.transcript.textContent = `"${data.text}"`;
+
+        // Auto-send the transcribed message
+        if (data.text) {
+          await sendMessage(data.text);
+          elements.transcript.textContent = '';
+        }
+
+      } catch (error) {
+        elements.transcript.textContent = '';
+        showError('Transcription failed');
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // UI Functions
+    // ═══════════════════════════════════════════════════════════════
+
+    function addMessage(role, content, model = null, cost = null) {
+      // Remove empty state if present
+      const emptyState = elements.messagesContainer.querySelector('.g-assist-empty');
+      if (emptyState) {
+        emptyState.remove();
+      }
+
+      const messageEl = document.createElement('div');
+      messageEl.className = `g-assist-message ${role}`;
+
+      const header = document.createElement('div');
+      header.className = 'g-assist-message-header';
+      header.innerHTML = `
+        <span>${role === 'user' ? 'You' : 'AI'}</span>
+        ${cost !== null ? `<span>${(cost * 1000).toFixed(2)}c</span>` : ''}
+      `;
+
+      const contentEl = document.createElement('div');
+      contentEl.className = 'g-assist-message-content';
+      contentEl.textContent = content;
+
+      messageEl.appendChild(header);
+      messageEl.appendChild(contentEl);
+
+      if (model) {
+        const footer = document.createElement('div');
+        footer.className = 'g-assist-message-footer';
+        footer.textContent = model;
+        messageEl.appendChild(footer);
+      }
+
+      elements.messagesContainer.appendChild(messageEl);
+      scrollToBottom();
+
+      state.messages.push({ role, content, model, cost, id: Date.now() });
+    }
+
+    function addTypingIndicator() {
+      const id = 'typing-' + Date.now();
+      const typingEl = document.createElement('div');
+      typingEl.id = id;
+      typingEl.className = 'g-assist-message assistant';
+      typingEl.innerHTML = `
+        <div class="g-assist-typing">
+          <span></span><span></span><span></span>
+        </div>
+      `;
+      elements.messagesContainer.appendChild(typingEl);
+      scrollToBottom();
+      return id;
+    }
+
+    function removeTypingIndicator(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function scrollToBottom() {
+      elements.messagesContainer.scrollTop = elements.messagesContainer.scrollHeight;
+    }
+
+    function updateCostDisplay() {
+      elements.costDisplay.textContent = `Cost: ${(state.totalCost * 100).toFixed(2)}c`;
+    }
+
+    function showError(message) {
+      elements.errorDisplay.textContent = message;
+      elements.errorDisplay.style.display = 'block';
+    }
+
+    function hideError() {
+      elements.errorDisplay.style.display = 'none';
+    }
+
+    function updateUI() {
+      elements.sendBtn.disabled = state.isLoading || !elements.messageInput.value.trim();
+      elements.messageInput.disabled = state.isLoading;
+      elements.voiceBtn.disabled = state.isLoading;
+    }
+
+    function updateVoiceButton() {
+      if (state.isRecording) {
+        elements.voiceBtn.classList.add('recording');
+        elements.voiceBtn.textContent = '🔴';
+        elements.messageInput.placeholder = 'Listening...';
+      } else {
+        elements.voiceBtn.classList.remove('recording');
+        elements.voiceBtn.textContent = '🎤';
+        elements.messageInput.placeholder = 'Ask a question...';
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Event Listeners
+    // ═══════════════════════════════════════════════════════════════
+
+    elements.sendBtn.addEventListener('click', () => {
+      const message = elements.messageInput.value.trim();
+      if (message && !state.isLoading) {
+        sendMessage(message);
+      }
+    });
+
+    elements.messageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const message = elements.messageInput.value.trim();
+        if (message && !state.isLoading) {
+          sendMessage(message);
+        }
+      }
+    });
+
+    elements.messageInput.addEventListener('input', () => {
+      updateUI();
+    });
+
+    elements.voiceBtn.addEventListener('click', () => {
+      if (state.isRecording) {
+        stopVoiceInput();
+      } else {
+        startVoiceInput();
+      }
+    });
+
+    elements.resetBtn.addEventListener('click', () => {
+      resetCost();
+    });
+
+    // Model selector
+    elements.modelSelector.addEventListener('click', (e) => {
+      if (e.target.classList.contains('g-assist-model-btn')) {
+        // Update active state
+        elements.modelSelector.querySelectorAll('.g-assist-model-btn')
+          .forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+
+        // Update model
+        state.currentModel = e.target.dataset.model;
+        console.log('Model changed to:', state.currentModel);
+      }
+    });
+
+    // Initialize
+    updateUI();
+  </script>
+</body>
+</html>

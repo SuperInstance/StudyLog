@@ -24,7 +24,7 @@ export class DirectorWidget extends ReactWidget {
   protected readonly messageService: MessageService;
 
   @inject(DirectorService)
-  protected readonly directorService: DirectorService;
+  protected readonly directorService!: DirectorService;
 
   private inputValue = '';
   private isProcessing = false;

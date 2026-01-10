@@ -1,0 +1,118 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# G-Assist API Worker Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Voice-enabled AI assistant for StudyLoG.AI. Routes intents to appropriate
+# agents (captain, teacher, builder, tester, director) and handles chat
+# interactions with conversation persistence.
+#
+# Deployment: wrangler publish (from this directory)
+# Secrets: wrangler secret put <KEY> (e.g., ANTHROPIC_API_KEY)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name = "g-assist-api"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workers AI Binding
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Provides access to Cloudflare's AI models for fallback when external
+# multi-model-router is not configured.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[ai]
+binding = "AI"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KV Namespaces
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# ASSISTANT_CACHE: Caches chat responses to reduce redundant API calls
+# RATE_LIMITS: Tracks rate limit counters per user/endpoint
+#
+# Setup: Run backend/scripts/setup-kv.sh and update IDs below
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[kv_namespaces]]
+binding = "ASSISTANT_CACHE"
+id = "your_assistant_cache_id"  # Update with actual ID from setup-kv.sh
+preview_id = "your_assistant_cache_preview_id"  # Update with actual ID
+
+[[kv_namespaces]]
+binding = "RATE_LIMITS"
+id = "your_rate_limits_id"  # Update with actual ID from setup-kv.sh
+preview_id = "your_rate_limits_preview_id"  # Update with actual ID
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# D1 Database - Conversation History
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Stores conversation history for persistence across sessions. Supports
+# upsert pattern for create-or-update operations.
+#
+# Schema: backend/workers/g-assist-api/schema.sql
+# Setup: Run backend/scripts/setup-d1.sh and update ID below
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[d1_databases]]
+binding = "CONVERSATIONS"
+database_name = "g_assist_conversations"
+database_id = "your_conversations_db_id"  # Update with actual ID from setup-d1.sh
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Environment Variables (Public)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# These are visible in deployment. Use secrets for sensitive values.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+# Environment: development, staging, production
+ENVIRONMENT = "development"
+
+# Logging level: debug, info, warn, error
+LOG_LEVEL = "info"
+
+# External router URLs (update after deploying those workers)
+# Comment out to use Workers AI fallback instead
+MULTI_MODEL_ROUTER_URL = "https://multi-model-router.studylog.workers.dev"
+FIRST_MILE_ROUTER_URL = "https://first-mile-router.studylog.workers.dev"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Secrets (Set via: wrangler secret put <KEY>)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Optional: Only needed if using external providers directly
+# (normally handled by multi-model-router)
+#
+# Commands (run from this directory):
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put OPENAI_API_KEY
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# Deployment Notes
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# 1. First-time setup:
+#    - Run backend/scripts/setup-d1.sh to create D1 database
+#    - Run backend/scripts/setup-kv.sh to create KV namespaces
+#    - Update the IDs above with the output from those scripts
+#
+# 2. Deploy dependencies first:
+#    - first-mile-router (no dependencies)
+#    - multi-model-router (no dependencies)
+#
+# 3. Deploy this worker:
+#    - cd backend/workers/g-assist-api
+#    - wrangler publish
+#
+# 4. Update environment variables:
+#    - After deploying dependencies, update MULTI_MODEL_ROUTER_URL and
+#      FIRST_MILE_ROUTER_URL to the actual worker URLs
+#    - Redeploy with: wrangler publish
+#
+# ═══════════════════════════════════════════════════════════════════════════════

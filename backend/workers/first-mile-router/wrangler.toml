@@ -1,0 +1,114 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# First-Mile Router Worker Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Fast local AI routing before expensive LLM calls. Uses Cloudflare Workers AI
+# for quick intent classification and recommends the appropriate provider/model
+# before calling the expensive multi-model-router.
+#
+# This is the "first mile" — a quick, cheap decision layer that saves costs
+# by routing intelligently.
+#
+# Deployment: wrangler publish (from this directory)
+# Secrets: wrangler secret put <KEY> (e.g., OPENAI_API_KEY)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name = "first-mile-router"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workers AI Binding
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Provides access to Cloudflare's fast AI models for intent classification.
+# Uses @cf/meta/llama-3.3-70b-instruct-fp8-fast for quick classification when
+# keyword heuristics are inconclusive.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[ai]
+binding = "AI"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KV Namespace - Classification Cache
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Caches intent classification results to avoid redundant AI calls.
+# Cache TTL varies by intent type (24h for bazaar, 1h for others).
+#
+# Setup: Run backend/scripts/setup-kv.sh and update IDs below
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[kv_namespaces]]
+binding = "CLASSIFICATION_CACHE"
+id = "your_classification_cache_id"  # Update with actual ID from setup-kv.sh
+preview_id = "your_classification_cache_preview_id"  # Update with actual ID
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# D1 Database - Student Context (Optional)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Optional student state for personalized routing based on learner phase,
+# module progress, and historical patterns.
+#
+# Schema: backend/d1/schema.sql (students, module_progress tables)
+# Setup: Run backend/scripts/setup-d1.sh and update ID below
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[d1_databases]]
+binding = "STUDENT_STATE"
+database_name = "student_state_db"
+database_id = "your_student_state_db_id"  # Update with actual ID from setup-d1.sh
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Environment Variables (Public)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# These are visible in deployment. Use secrets for sensitive values.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[vars]
+# Environment: development, staging, production
+ENVIRONMENT = "development"
+
+# Logging level: debug, info, warn, error
+LOG_LEVEL = "info"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Secrets (Set via: wrangler secret put <KEY>)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Optional: API keys for fallback providers. These are only used if Workers AI
+# is unavailable. In most cases, Workers AI is sufficient for classification.
+#
+# Commands (run from this directory):
+#   wrangler secret put OPENAI_API_KEY
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put GOOGLE_API_KEY
+#   wrangler secret put NVIDIA_API_KEY
+#
+# Example values (paste when prompted):
+#   OPENAI_API_KEY: sk-...
+#   ANTHROPIC_API_KEY: sk-ant-...
+#   GOOGLE_API_KEY: AIza...
+#   NVIDIA_API_KEY: nvapi-...
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# Deployment Notes
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# 1. First-time setup:
+#    - Run backend/scripts/setup-d1.sh to create D1 database
+#    - Run backend/scripts/setup-kv.sh to create KV namespace
+#    - Update the IDs above with the output from those scripts
+#
+# 2. Deploy (this worker has no dependencies):
+#    - cd backend/workers/first-mile-router
+#    - wrangler publish
+#
+# 3. Deploy order: DEPLOY THIS FIRST. Both multi-model-router and g-assist-api
+#    depend on this worker for cascade routing functionality.
+#
+# ═══════════════════════════════════════════════════════════════════════════════

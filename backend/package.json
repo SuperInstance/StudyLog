@@ -23,10 +23,15 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint workers lib",
     "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
     "test:ci": "vitest run",
+    "test:e2e": "vitest workers/__tests__/e2e",
     "build": "tsc"
   },
-  "dependencies": {},
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250109.0",
     "@types/node": "^22.10.5",

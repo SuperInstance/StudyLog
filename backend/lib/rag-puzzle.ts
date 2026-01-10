@@ -55,8 +55,8 @@ export interface RAGContext {
 
 // Embed text using Cloudflare AI
 export async function embedText(ai: Ai, text: string): Promise<number[]> {
-  const result = await ai.run('@cf/baai/bge-base-en-v1.5', { text: [text] });
-  return result.data[0];
+  const result = await ai.run('@cf/baai/bge-base-en-v1.5' as any, { text: [text] }) as { data?: number[][] };
+  return result.data?.[0] ?? [];
 }
 
 // Search for relevant puzzle templates using Vectorize
@@ -70,11 +70,20 @@ export async function searchTemplates(
   },
   limit = 10
 ): Promise<string[]> {
-  const results = await vectorize.query(query, {
+  const vectorFilter: Record<string, string> = {};
+  if (filters.module) {
+    vectorFilter.module = filters.module;
+  }
+
+  const queryOptions: VectorizeQueryOptions = {
     topK: limit,
     returnMetadata: 'all',
-    filter: filters.module ? { module: filters.module } : undefined,
-  });
+  };
+  if (Object.keys(vectorFilter).length > 0) {
+    queryOptions.filter = vectorFilter as VectorizeVectorMetadataFilter;
+  }
+
+  const results = await vectorize.query(query, queryOptions);
 
   return results.matches
     .filter((m) => {
@@ -270,7 +279,7 @@ export async function generatePuzzleForStudent(
 
 // Batch generate puzzles for a module
 export async function generateModulePuzzles(
-  ai: Ai,
+  _ai: Ai,
   module: string,
   stage: number,
   count: number

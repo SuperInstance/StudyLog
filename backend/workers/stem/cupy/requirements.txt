@@ -1,0 +1,23 @@
+# CuPy GPU Bridge Requirements
+# For StudyLoG.AI STEM acceleration tools
+
+# Core dependencies
+numpy>=1.24.0
+cupy-cuda12x>=13.0.0  # For CUDA 12.x, use cupy-cuda11x for CUDA 11.x
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+websockets>=12.0
+
+# Optional: for image processing operations
+scipy>=1.11.0
+pillow>=10.1.0
+
+# Optional: for more advanced data science
+scikit-learn>=1.3.0
+scipy>=1.11.0
+
+# Development dependencies (optional)
+pytest>=7.4.0
+black>=23.11.0
+mypy>=1.7.0

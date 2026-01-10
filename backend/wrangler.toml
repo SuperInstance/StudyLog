@@ -98,6 +98,13 @@ RATE_LIMIT_WINDOW = "60"
 # - JWT_SECRET
 
 # ═══════════════════════════════════════════════════════════
+# KV Namespace - Budget tracker caching
+# ═══════════════════════════════════════════════════════════
+[[kv_namespaces]]
+binding = "BUDGET_CACHE"
+id = "placeholder-will-be-created"
+
+# ═══════════════════════════════════════════════════════════
 # Build Configuration
 # ═══════════════════════════════════════════════════════════
 [build]
@@ -105,3 +112,34 @@ command = "npm run build"
 
 [build.upload]
 format = "modules"
+
+# ═══════════════════════════════════════════════════════════
+# Budget Tracker Worker
+# ═══════════════════════════════════════════════════════════
+# Separate worker for budget tracking with scheduled tasks
+# Deploy with: wrangler publish budget-tracker
+# ═══════════════════════════════════════════════════════════
+[budget-tracker]
+name = "studylog-budget-tracker"
+main = "workers/budget-tracker/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Budget tracker database binding (shares with main worker)
+[[budget-tracker.d1_databases]]
+binding = "DB"
+database_name = "studylog-students"
+database_id = "placeholder-will-be-created"
+
+# Budget tracker cache binding
+[[budget-tracker.kv_namespaces]]
+binding = "BUDGET_CACHE"
+id = "placeholder-will-be-created"
+
+# Scheduled task for end-of-day fill-knowledge processing
+[budget-tracker.triggers]
+crons = ["50 23 * * *"]  # 11:50 PM daily
+
+[budget-tracker.vars]
+ENVIRONMENT = "development"
+LOG_LEVEL = "info"

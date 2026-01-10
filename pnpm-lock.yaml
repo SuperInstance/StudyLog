@@ -25,6 +25,10 @@ importers:
         version: 8.2.4(@types/node@22.19.5)(encoding@0.1.13)
 
   backend:
+    dependencies:
+      itty-router:
+        specifier: ^4.0.20
+        version: 4.2.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20250109.0
@@ -2268,6 +2272,9 @@ packages:
   isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
+
+  itty-router@4.2.2:
+    resolution: {integrity: sha512-KegPW0l9SNPadProoFT07AB84uOqLUwzlXQ7HsqkS31WUrxkjdhcemRpTDUuetbMJ89uBtWeQSVoiEmUAu31uw==}
 
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
@@ -5710,6 +5717,8 @@ snapshots:
   isexe@3.1.1: {}
 
   isobject@3.0.1: {}
+
+  itty-router@4.2.2: {}
 
   jackspeak@3.4.3:
     dependencies:

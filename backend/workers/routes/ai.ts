@@ -101,13 +101,13 @@ aiRoutes.post('/embed', async (request, env) => {
     );
   }
 
-  const embeddings = await env.AI.run(MODELS.cloudflare.embed, {
+  const embeddings = await env.AI.run(MODELS.cloudflare.embed as any, {
     text: body.texts,
-  });
+  }) as { data?: number[][] };
 
   return Response.json({
     success: true,
-    data: { embeddings: embeddings.data },
+    data: { embeddings: embeddings.data ?? [] },
   });
 });
 
@@ -235,11 +235,11 @@ async function callCloudflare(
 ): Promise<AIResponse> {
   const model = type === 'code' ? MODELS.cloudflare.code : MODELS.cloudflare.chat;
 
-  const result = await env.AI.run(model, {
+  const result = await env.AI.run(model as any, {
     prompt: body.prompt,
     max_tokens: body.maxTokens || 1024,
     temperature: body.temperature || 0.7,
-  });
+  }) as { response?: string };
 
   return {
     text: result.response || '',

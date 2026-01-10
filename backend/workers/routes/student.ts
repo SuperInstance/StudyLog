@@ -44,7 +44,7 @@ studentRoutes.post('/progress/:module/start', async (request, env, _ctx, params)
   const { module } = params;
   const validModules = ['cognitive-mill', 'sitka-sound', 'intelligence-ranch'];
 
-  if (!validModules.includes(module)) {
+  if (!module || !validModules.includes(module)) {
     return Response.json(
       { success: false, error: { code: 'INVALID_MODULE', message: 'Invalid module' } },
       { status: 400 }

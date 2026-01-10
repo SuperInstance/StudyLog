@@ -165,6 +165,85 @@ export class AgentDashboardFrontendService implements FrontendApplicationContrib
     this.logger.info(`Selected stage ${stageId}`);
   }
 
+  /**
+   * Create a new agent with the specified configuration.
+   *
+   * UI Flow:
+   * 1. User clicks "Add Agent" button in dashboard
+   * 2. Dialog opens with form fields (name, type, model)
+   * 3. User fills form and clicks Create
+   * 4. This method validates and creates the agent
+   * 5. Dashboard refreshes to show new agent
+   *
+   * Validation:
+   * - Name must be unique (no duplicates)
+   * - Name and type are required
+   * - Model defaults based on agent type if not specified
+   *
+   * Future enhancements:
+   * - Agent configuration (personality, temperature, max_tokens)
+   * - Permission system (which users can modify which agents)
+   * - Agent templates (presets for common use cases)
+   * - Bulk agent creation
+   *
+   * @param config - Agent configuration including name, type, and model
+   * @returns The newly created agent info
+   * @throws Error if validation fails (duplicate name, missing required fields)
+   */
+  async createAgent(config: {
+    name: string;
+    type: 'slm' | 'director_agent' | 'orchestrator' | 'vector_swarm';
+    model?: string;
+  }): Promise<AgentInfo> {
+    // Validation: Name is required
+    if (!config.name || config.name.trim().length === 0) {
+      throw new Error('Agent name is required');
+    }
+
+    // Validation: Name must be unique
+    const nameExists = this.agents.some(
+      (a) => a.name.toLowerCase() === config.name.toLowerCase()
+    );
+    if (nameExists) {
+      throw new Error(`An agent named "${config.name}" already exists`);
+    }
+
+    // Validation: Type is required
+    if (!config.type) {
+      throw new Error('Agent type is required');
+    }
+
+    // Default model based on type if not specified
+    const defaultModels: Record<string, string> = {
+      slm: 'nemotron-mini:4b',
+      director_agent: 'llama-3.1-70b',
+      orchestrator: 'claude-opus-4-5',
+      vector_swarm: 'text-embedding-3-small',
+    };
+
+    const model = config.model || defaultModels[config.type] || 'unknown';
+
+    // Generate unique ID
+    const id = `${config.type.toLowerCase().replace('_', '-')}-${Date.now()}`;
+
+    // Create new agent
+    const newAgent: AgentInfo = {
+      id,
+      name: config.name.trim(),
+      type: config.type,
+      status: 'idle',
+      model,
+      tokensUsed: 0,
+      cost: 0,
+      mood: 0,
+    };
+
+    this.agents.push(newAgent);
+    this.logger.info(`Created new agent: ${newAgent.name} (${newAgent.id})`);
+
+    return newAgent;
+  }
+
   onStart(): void {
     this.logger.info('Starting Agent Dashboard Frontend Service');
   }

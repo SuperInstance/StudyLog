@@ -56,25 +56,26 @@ interface ConsolidationResult {
   memoriesConsolidated: number;
 }
 
-interface Memory {
-  id: string;
-  userId: string;
-  agentId: string;
-  content: string;
-  embedding: number[];
-  importance: number;
-  lastAccessed: number;
-  accessCount: number;
-}
-
-interface LoRAConfig {
-  agentId: string;
-  rank: number;
-  alpha: number;
-  dropout: number;
-  epochs: number;
-  batchSize: number;
-}
+// These types are documented for future use
+// interface Memory {
+//   id: string;
+//   userId: string;
+//   agentId: string;
+//   content: string;
+//   embedding: number[];
+//   importance: number;
+//   lastAccessed: number;
+//   accessCount: number;
+// }
+//
+// interface LoRAConfig {
+//   agentId: string;
+//   rank: number;
+//   alpha: number;
+//   dropout: number;
+//   epochs: number;
+//   batchSize: number;
+// }
 
 // ============================================================================
 // Router Setup
@@ -192,6 +193,10 @@ router.get('/lora/:userId/:agentId', async (req) => {
   const userId = req.param?.userId;
   const agentId = req.param?.agentId;
 
+  if (!userId || !agentId) {
+    return new Response(JSON.stringify({ error: 'User ID and Agent ID required' }), { status: 400 });
+  }
+
   const result = await env.DB
     .prepare('SELECT * FROM lora_adapters WHERE user_id = ? AND agent_id = ? ORDER BY created_at DESC LIMIT 1')
     .bind(userId, agentId)
@@ -207,7 +212,8 @@ router.get('/lora/:userId/:agentId', async (req) => {
 // ============================================================================
 
 async function performSleepCycle(env: Env, userId: string): Promise<ConsolidationResult> {
-  const date = new Date().toISOString().split('T')[0];
+  const dateStr = new Date().toISOString();
+  const date = dateStr.split('T')[0] ?? dateStr;
   let embeddingsCreated = 0;
   let memoriesConsolidated = 0;
   let loraPath: string | undefined;
@@ -256,14 +262,17 @@ async function performSleepCycle(env: Env, userId: string): Promise<Consolidatio
     }
   }
 
-  return {
+  const result: ConsolidationResult = {
     userId,
     date,
     embeddingsCreated,
-    loraTrained: !!loraPath,
-    loraPath,
+    loraTrained: !!loraPath && loraPath.length > 0,
     memoriesConsolidated,
   };
+  if (loraPath && loraPath.length > 0) {
+    result.loraPath = loraPath;
+  }
+  return result;
 }
 
 async function fetchJournalEntries(env: Env, userId: string, date: string): Promise<JournalEntry[]> {
@@ -301,8 +310,8 @@ async function generateEmbedding(env: Env, text: string): Promise<number[]> {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      return data.data[0].embedding;
+      const data = await response.json() as { data?: Array<{ embedding: number[] }> };
+      return data.data?.[0]?.embedding ?? [];
     }
   }
 
@@ -363,10 +372,11 @@ async function consolidateMemories(env: Env, userId: string): Promise<number> {
 function groupByAgent(entries: JournalEntry[]): Record<string, JournalEntry[]> {
   const grouped: Record<string, JournalEntry[]> = {};
   for (const entry of entries) {
-    if (!grouped[entry.agentId]) {
-      grouped[entry.agentId] = [];
+    const agentId = entry.agentId;
+    if (!grouped[agentId]) {
+      grouped[agentId] = [];
     }
-    grouped[entry.agentId].push(entry);
+    grouped[agentId]!.push(entry);
   }
   return grouped;
 }

@@ -1,0 +1,30 @@
+{
+  "name": "@studylog/si-bazaar",
+  "version": "0.1.0",
+  "description": "Community marketplace for sharing creations",
+  "license": "MIT",
+  "keywords": ["theia-extension", "bazaar", "marketplace", "community"],
+  "files": ["lib", "src"],
+  "main": "lib/common/index.js",
+  "types": "lib/common/index.d.ts",
+  "dependencies": {
+    "@theia/core": "1.54.0",
+    "@theia/filesystem": "1.54.0",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "typescript": "^5.7.3",
+    "rimraf": "^6.0.1"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/si-bazaar-frontend-module"
+    }
+  ]
+}

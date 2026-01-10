@@ -1,0 +1,91 @@
+{
+  "name": "@studylog/godot-integration",
+  "version": "0.1.0",
+  "description": "Godot integration worker for StudyLoG.AI - Theia IDE bridge with custom nodes, shaders, and educational content",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.js"
+    },
+    "./theia-bridge": {
+      "types": "./dist/theia-bridge/index.d.ts",
+      "import": "./dist/theia-bridge/index.js"
+    },
+    "./content": {
+      "types": "./dist/content/index.d.ts",
+      "import": "./dist/content/index.js"
+    },
+    "./patterns/*": "./src/patterns/*.gd",
+    "./nodes/*": "./src/nodes/*.gd",
+    "./shaders/*": "./src/shaders/*.gdshader"
+  },
+  "files": [
+    "dist",
+    "src/patterns",
+    "src/nodes",
+    "src/shaders",
+    "project_template"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "studylog",
+    "godot",
+    "theia",
+    "ide",
+    "ai-visualization",
+    "education",
+    "gamification"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/studylog-ai/backend",
+    "directory": "workers/godot-integration"
+  },
+  "bugs": {
+    "url": "https://github.com/studylog-ai/backend/issues"
+  },
+  "homepage": "https://studylog.ai",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.7.0",
+    "vitest": "^1.6.0"
+  },
+  "peerDependencies": {
+    "ws": "^8.0.0"
+  },
+  "peerDependenciesMeta": {
+    "ws": {
+      "optional": true
+    }
+  }
+}

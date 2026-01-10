@@ -7,6 +7,9 @@
  * - /api/v1/ai/*       - AI inference routing
  * - /api/v1/game/*     - Game state sync
  * - /api/v1/assets/*   - Asset management
+ * - /api/v1/bazaar/*   - Community marketplace
+ * - /api/v1/generate/* - Code generation
+ * - /api/v1/images/*   - Image generation with cascade routing (NEW)
  * - /health            - Health check
  */
 
@@ -17,6 +20,9 @@ import { aiRoutes } from './routes/ai';
 import { gameRoutes } from './routes/game';
 import { assetRoutes } from './routes/assets';
 import { errorHandler, corsHeaders, rateLimiter } from './middleware';
+import { handleBazaarRequest } from './bazaar';
+import { handleCodeGeneratorRequest } from './code-generator';
+import { handleImageCascadeRequest } from './image-cascade';
 import type { Env } from './types';
 
 const router = new Router();
@@ -40,6 +46,20 @@ router.route('/api/v1/assets', assetRoutes);
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     try {
+      const url = new URL(request.url);
+      const pathname = url.pathname;
+
+      // Handle new worker routes directly (bazaar, code-generator, image-cascade)
+      if (pathname.startsWith('/api/v1/bazaar')) {
+        return handleBazaarRequest(request, env, ctx);
+      }
+      if (pathname.startsWith('/api/v1/generate')) {
+        return handleCodeGeneratorRequest(request, env, ctx);
+      }
+      if (pathname.startsWith('/api/v1/images')) {
+        return handleImageCascadeRequest(request, env, ctx);
+      }
+
       // CORS preflight
       if (request.method === 'OPTIONS') {
         return new Response(null, { headers: corsHeaders(request) });

@@ -1,0 +1,469 @@
+/**
+ * StudyLoG.AI - Digital Tutor Widget Styles
+ */
+
+/* Container */
+.si-digital-tutor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--theia-layout-background);
+  color: var(--theia-ui-font-color1);
+}
+
+.si-digital-tutor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.tutor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--theia-border-color);
+  background: var(--theia-editorGroupHeader-tabsBackground);
+  flex-shrink: 0;
+}
+
+.tutor-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tutor-title h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.personality-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tutor-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.eye-contact-toggle {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--theia-border-color);
+  border-radius: 8px;
+  background: var(--theia-button-secondaryBackground);
+  color: var(--theia-button-foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.eye-contact-toggle:hover {
+  background: var(--theia-button-secondaryHoverBackground);
+}
+
+.eye-contact-toggle.active {
+  border-color: var(--theia-accent-color3);
+  background: var(--theia-accent-color3);
+  color: white;
+}
+
+/* Main Content */
+.tutor-content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+/* Avatar Container */
+.avatar-container {
+  width: 50%;
+  min-width: 300px;
+  position: relative;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-emotion {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+/* Messages */
+.tutor-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Welcome Screen */
+.tutor-welcome {
+  padding: 20px;
+  text-align: center;
+}
+
+.tutor-welcome h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tutor-welcome p {
+  margin: 8px 0;
+  opacity: 0.8;
+}
+
+.personality-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.personality-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  border: 2px solid var(--theia-border-color);
+  border-radius: 12px;
+  background: var(--theia-input-background);
+  color: var(--theia-input-foreground);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
+.personality-btn:hover {
+  background: var(--theia-inputOption-activeBackground);
+  transform: translateY(-2px);
+}
+
+.personality-btn.active {
+  border-width: 3px;
+  background: var(--theia-inputOption-selectedBackground);
+}
+
+.personality-btn i {
+  font-size: 24px;
+}
+
+.personality-btn span {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Messages */
+.message {
+  display: flex;
+  gap: 12px;
+  max-width: 85%;
+}
+
+.message.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message.assistant {
+  align-self: flex-start;
+}
+
+.message.system {
+  align-self: center;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: white;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message-emotion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.7;
+  text-transform: capitalize;
+}
+
+.message-text {
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: var(--theia-inputOption-activeBackground);
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.message.user .message-text {
+  background: var(--theia-button-primaryBackground);
+  color: var(--theia-button-foreground);
+}
+
+.message-time {
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.typing-indicator span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Emotion Bar */
+.emotion-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--theia-border-color);
+  background: var(--theia-editorGroupHeader-tabsBackground);
+  flex-shrink: 0;
+}
+
+.emotion-label {
+  font-size: 12px;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.emotion-selector {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.emotion-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--theia-border-color);
+  border-radius: 8px;
+  background: var(--theia-button-secondaryBackground);
+  color: var(--theia-button-foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.emotion-btn:hover {
+  background: var(--theia-button-secondaryHoverBackground);
+  transform: scale(1.1);
+}
+
+.emotion-btn.active {
+  background: var(--theia-accent-color3);
+  border-color: var(--theia-accent-color3);
+  color: white;
+}
+
+/* Input Area */
+.tutor-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--theia-border-color);
+  flex-shrink: 0;
+}
+
+.tutor-input textarea {
+  width: 100%;
+  min-height: 60px;
+  max-height: 120px;
+  padding: 12px;
+  border: 1px solid var(--theia-border-color);
+  border-radius: 10px;
+  background: var(--theia-input-background);
+  color: var(--theia-input-foreground);
+  font-family: var(--theia-ui-font-family);
+  font-size: 14px;
+  resize: vertical;
+}
+
+.tutor-input textarea:focus {
+  outline: none;
+  border-color: var(--theia-accent-color3);
+  box-shadow: 0 0 0 3px rgba(var(--theia-accent-color3), 0.1);
+}
+
+.input-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.input-actions button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: var(--theia-button-secondaryBackground);
+  color: var(--theia-button-foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.input-actions button:hover:not(:disabled) {
+  background: var(--theia-button-secondaryHoverBackground);
+  transform: scale(1.05);
+}
+
+.input-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.voice-button.recording {
+  background: var(--theia-error-background);
+  color: var(--theia-error-foreground);
+  animation: pulse-recording 1s infinite;
+}
+
+@keyframes pulse-recording {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--theia-error-background), 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(var(--theia-error-background), 0);
+  }
+}
+
+.send-button {
+  background: var(--theia-button-primaryBackground);
+  color: var(--theia-button-foreground);
+}
+
+.send-button:hover:not(:disabled) {
+  background: var(--theia-button-primaryHoverBackground);
+}
+
+/* Audio Visualizer */
+.audio-visualizer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--theia-input-background);
+  border-radius: 8px;
+  margin-bottom: 4px;
+}
+
+.visualizer-bars {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 20px;
+}
+
+.visualizer-bar {
+  width: 5px;
+  background: linear-gradient(to top, var(--theia-accent-color3), var(--theia-accent-color2));
+  border-radius: 3px;
+  animation: visualizer-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes visualizer-pulse {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tutor-content {
+    flex-direction: column;
+  }
+
+  .avatar-container {
+    width: 100%;
+    min-width: auto;
+    height: 300px;
+  }
+
+  .message {
+    max-width: 95%;
+  }
+}

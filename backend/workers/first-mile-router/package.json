@@ -1,0 +1,22 @@
+{
+  "name": "@studylog/first-mile-router",
+  "version": "1.0.0",
+  "description": "Fast AI routing layer before expensive LLM calls",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "tail": "wrangler tail",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0",
+    "wrangler": "^3.0.0"
+  }
+}

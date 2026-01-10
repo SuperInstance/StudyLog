@@ -1,0 +1,25 @@
+{
+  "name": "@studylog/g-assist-api",
+  "version": "1.0.0",
+  "description": "Voice-enabled AI assistant API for StudyLoG.AI",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "tail": "wrangler tail",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:ci": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260109.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.114.16"
+  }
+}

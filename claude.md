@@ -1,267 +1,265 @@
-# StudyLoG.AI by SuperInstance.AI - Claude Code Master Prompt
+# StudyLoG.AI by SuperInstance.AI - Build Manifest
 
-## Company Vision
+## North Star
 
-**SuperInstance.AI** is the backend platform that powers a family of gamified frontends. We are building **the Minecraft of generative agent-based open worlds and STEM** — a network of thinkers and makers who design products on tools they grew up playing with.
-
----
-
-## The Ecosystem
-
-### Backend Platform
-**SuperInstance.AI** — The unified backend combining:
-- Multi-model AI router (LLM → image → 3D → ACE)
-- Godot engine integration for live visualization
-- Agent orchestration and progressive unlock systems
-- Marketplace infrastructure for parts, manufacturing, and services
-
-### Frontend Products (StudyLoG.AI First)
-
-| Product | Focus | Status |
-|---------|-------|--------|
-| **StudyLoG.AI** | Education — AI/STEM learning through progressive simulation | 🔴 BUILDING NOW |
-| **DMLoG.AI** | TTRPG — DM prep, practice, visualization with agents as players | Planned |
-| **MakerLoG.AI** | IoT/Robotics — Gamified product development, 3D printing marketplace | Planned |
-| **FishingLoG.AI** | Fishing simulation (Sitka Sound ecological engine) | Partial |
-| **ActiveLoG.AI** | Fitness | Planned |
-| **RealLoG.AI** | Content creation | Planned |
-| **PlayerLoG.AI** | Pure gaming | Planned |
+**The Minecraft of generative AI** — a self-generating ecosystem where:
+- AI creates simulations at any quality level
+- Community shares, rates, and improves creations
+- Forking works like GitHub — take it, make it yours
+- Good teachers earn reputation through feedback
 
 ---
 
-## The Killer Feature
+## Agent Orchestration
 
-**These are all fronts.** Users can:
-1. Try multiple products
-2. Learn the underlying tools
-3. Create their own products/experiences
-4. **Monetize** — we earn when they earn
+The system uses agent-based orchestration for task distribution and coordination.
 
-Eventually: certification paths, revenue sharing, open-source marketplace with reputation systems for:
-- 3D printer workshops
-- Assembly centers
-- Parts depots
-- Product simulators (try before you buy)
+### Agent Roles
 
----
+| Agent | Role | Icon | Description |
+|-------|------|------|-------------|
+| **Captain** | Game simulation, NPC behavior | `fa-anchor` | Handles game-related queries and scenarios |
+| **Teacher** | Explanations, hints, tutoring | `fa-graduation-cap` | Provides educational content and guidance |
+| **Builder** | Code generation and review | `fa-hammer` | Generates and validates code |
+| **Tester** | Verification, error analysis | `fa-check-circle` | Tests and verifies implementations |
+| **Director** | Orchestration, meta-questions | `fa-sitemap` | Coordinates other agents and handles complex requests |
 
-## Current Project: StudyLoG.AI
-
-We are building a **Cursor-class IDE on Theia** that the player/developer can customize — even the IDE itself. This foundation will evolve to fit our needs across all products.
-
-### StudyLoG.AI Stages
-1. **Cognitive Mill** — Learn how AI models work
-2. **Intelligence Ranch** — Train and breed AI agents
-3. **Sitka Sound** — Multi-agent systems and game theory
-4. **Digital Twins** — Hardware deployment with NVIDIA acceleration
-
----
-
-## Architecture Mantra
-
-**"Every layer is a mill. Every agent is a millwright. Every user graduates to building mills."**
-
----
-
-## Design Principles for Backend
-
-1. **Product-Agnostic Core** — Backend must serve StudyLoG.AI now but adapt easily to DMLoG, MakerLoG, etc.
-2. **Maximal Customizability** — Users can fork, modify, and create their own versions
-3. **Simulation First** — Everything can be simulated before deployment
-4. **Open Marketplace Ready** — Rating, reputation, and transaction infrastructure baked in
-5. **Progressive Disclosure** — Complex tools unlock through mastery, not complexity
-
----
-
-## Repository Structure
+### Agent Selection Flow
 
 ```
-studylog/
-├── apps/
-│   └── theia-ide/              # Theia IDE application
-│       ├── extensions/         # Theia extensions
-│       │   ├── si-cognitive-mill/     # Arduino simulation (from local)
-│       │   ├── si-agent-director/     # Agent dashboard (from local)
-│       │   ├── si-godot-embed/        # Godot embedding (from local)
-│       │   ├── si-intelligence-ranch/  # Agent breeding (from GitHub)
-│       │   ├── si-a2ui-renderer/       # Agent-to-UI protocol (from GitHub)
-│       │   ├── si-sitka-sound/         # Ecological simulation (from local)
-│       │   └── si-multi-model/         # Multi-model router (from local)
-│       ├── browser-app/        # Web version
-│       └── electron-app/       # Desktop version
-├── packages/                   # Shared packages
-│   ├── agents/                 # AI Agent system + A2UI components
-│   ├── hardware/               # Hardware detection
-│   └── ollama/                 # Ollama integration
-├── backend/                    # Cloudflare Workers backend
-│   ├── workers/                # API endpoints + specialized workers
-│   ├── d1/                     # Database schemas
-│   └── wrangler.toml           # CF config
-├── config/                     # Model configurations
-├── docs/                       # Architecture & comparison docs
-├── scripts/                    # Setup scripts
-├── turbo.json                  # Turborepo config
-└── package.json                # Root workspace config
+User Query
+    ↓
+[first-mile-router] → Intent Classification
+    ↓
+[Multi-Model Router] → Provider Selection
+    ↓
+[Appropriate Agent] → Task Execution
+    ↓
+Response + Cost Tracking
 ```
 
----
+### Completed Implementation Phases
 
-## Biological → AI Mapping (Universal Across Products)
+**Phase 1: Foundation (2026-01-10) - Complete:**
+- ✅ si-gassist extension skeleton (widget, service, module, styles)
+- ✅ first-mile-router worker with intent classification
+- ✅ g-assist-api worker (route/chat/stt/tts endpoints)
+- ✅ Cascade router integration in multi-model-router
+- ✅ IMPLEMENTATION.md documentation
 
-| Biological | AI Architecture | Used In |
-|------------|----------------|---------|
-| Zooplankton | Token | All |
-| Herring | Vector Swarm | All, Fishing |
-| Deckhand | SLM + LoRA | All, Maker |
-| Captain | Director Agent | All |
-| Whale | Orchestrator | All |
-| Fleet | A2A Network | All, Fishing |
-| Dog | LoRA Adapter | Maker |
+**Phase 2: Voice & Cost Tracking (2026-01-10) - Complete:**
+- ✅ Voice input for G-Assist widget (MediaRecorder API, audio visualizer)
+- ✅ Cost tracking dashboard implementation
+- ✅ Backend /costs/cascade endpoint in multi-model-router
+- ✅ COMPONENTS.md rolodex of reusable components
 
----
+**Phase 3: Documentation (2026-01-10) - Complete:**
+- ✅ Main README.md with project overview
+- ✅ docs/INDEX.md documentation hub
+- ✅ docs/ARCHITECTURE.md system design
+- ✅ CONTRIBUTING.md guidelines
+- ✅ ADR-001 through ADR-004 architecture decisions
 
-## Theia Extensions (StudyLoG.AI)
-
-### si-cognitive-mill
-**Purpose**: Industrial revolution learning through Arduino simulation
-
-**From Local (cognitivemill)**:
-- SimAVR integration for real Arduino simulation
-- Component palette (resistors, capacitors, ICs)
-- Workbench visualization
-- Export to PlatformIO projects
-- Circuit simulation logic
-
-### si-agent-director
-**Purpose**: Top-level agent orchestration and dashboard
-
-**From Local (cognitivemill)**:
-- Real-time agent status display
-- Model switching UI
-- Cost tracking (tokens, $)
-- Mood indicators for biological agents
-- Stage progression UI
-- Progressive unlock system
-
-### si-godot-embed
-**Purpose**: Embed Godot 4.3 game engine as living panel
-
-**From Local (cognitivemill)**:
-- WebSocket bridge for real-time communication
-- Hot-reload functionality
-- Process manager for headless Godot
-- Backend service for Godot control
-
-### si-intelligence-ranch
-**Purpose**: Train and breed AI agents like livestock
-
-**From GitHub**: Structure ready for implementation
-
-### si-a2ui-renderer
-**Purpose**: Agent-to-UI component protocol
-
-**From GitHub**: Protocol and renderer components
-
-### si-sitka-sound
-**Purpose**: Ecological simulation with game theory
-
-**From Local (cognitivemill)**:
-- Murmuration logic for fish schools
-- Fleet communication (A2A)
-- Asymmetrical information simulation
-- Game theory payoffs
-- Trust/reputation systems
-
-### si-multi-model
-**Purpose**: Multi-model AI router with fallbacks
-
-**From Local (cognitivemill)**:
-- Multi-model chat interface
-- Provider selection UI
-- Cost tracking per model
-- Fallback chain configuration
-- KV caching
+**Phase 4: Bazaar (Complete):**
+- ✅ si-bazaar extension
+- ✅ Bazaar worker API
+- ✅ D1 database schema for creations, users, feedback
+- ✅ Fork and merge request flows
 
 ---
 
-## Backend Workers (Cloudflare)
-
-### multi-model-router
-**Purpose**: Route LLM requests to cheapest available provider
-
-**Features**:
-- Provider API key management
-- Fallback chain: ollama → google → nvidia → anthropic → openai
-- KV response caching
-- Cost tracking per user
-- D1 cost storage
-
-### sleep-trainer
-**Purpose**: "Sleep = Training Mode" - LoRA training from daily logs
-
-**Features**:
-- Batch process daily logs into embeddings
-- Generate LoRA from journal entries
-- Memory consolidation simulation
-- Vectorize integration for memories
-
-### asset-pipeline
-**Purpose**: Generate images, 3D models, audio
-
-**Features**:
-- Route to cheapest provider
-- Convert to Godot format
-- Hot-reload into game
-
----
-
-## Commands Reference
+## Quick Start
 
 ```bash
-# Development
-npm run dev              # Start all in dev mode
-turbo run dev            # Alternative
+# Install deps
+pnpm install
 
-# Building
-npm run build            # Build all packages
-turbo run build          # Alternative
+# Development (all services)
+pnpm dev
 
-# Backend
-npm run backend:dev      # Start backend locally
-npm run backend:deploy   # Deploy to Cloudflare
+# Build
+pnpm build
 
-# Testing
-npm run test             # Run all tests
-npm run typecheck        # Type check only
-npm run lint             # Lint all code
+# Deploy backend
+pnpm backend:deploy
 ```
 
 ---
 
-## When Working on This Codebase
+## Project Structure
 
-1. **StudyLoG.AI is the reference implementation** — build for education first
-2. **Keep product-agnostic** — ask "would DMLoG.AI use this differently?"
-3. **Simulation first** — can it be simulated before deployed?
-4. **Marketplace thinking** — could this be rated, shared, or sold?
+```
+studylog-github/
+├── README.md                  # Main project README
+├── CLAUDE.md                  # This build manifest
+├── CONTRIBUTING.md            # Contribution guidelines
+├── COMPONENTS.md              # Component reference
+├── IMPLEMENTATION.md          # Implementation status
+├── ROADMAP.md                 # Development roadmap
+├── docs/                      # Documentation
+│   ├── INDEX.md               # Documentation index
+│   ├── ARCHITECTURE.md        # System architecture
+│   ├── API_REFERENCE.md       # API documentation
+│   ├── DEPLOYMENT.md          # Deployment guide
+│   ├── TROUBLESHOOTING.md     # Troubleshooting guide
+│   └── adr/                   # Architecture Decision Records
+│       ├── ADR-001-cascade-routing-architecture.md
+│       ├── ADR-002-theia-extension-architecture.md
+│       ├── ADR-003-cloudflare-workers-backend.md
+│       └── ADR-004-agent-based-voice-assistant.md
+├── apps/theia-ide/            # Theia IDE application
+│   └── extensions/            # Theia extensions
+│       ├── si-gassist/        # Voice assistant widget
+│       ├── si-multi-model/    # Multi-model router UI
+│       ├── si-godot-embed/    # Godot panel embedding
+│       ├── si-agent-director/ # Agent orchestration
+│       ├── si-cognitive-mill/ # AI learning module
+│       ├── si-intelligence-ranch/ # Agent training
+│       ├── si-sitka-sound/    # Multi-agent ecosystems
+│       ├── si-a2ui-renderer/  # Agent-to-UI protocol
+│       └── si-bazaar/         # Community marketplace
+├── backend/workers/           # Cloudflare Workers
+│   ├── first-mile-router/     # Intent classification
+│   ├── multi-model-router/    # LLM routing with fallbacks
+│   ├── g-assist-api/          # Voice assistant backend
+│   ├── code-generator/        # AI code generation
+│   └── bazaar/                # Community API
+├── backend/d1/                # D1 database schemas
+│   ├── schema.sql             # Main schema
+│   └── seed-bazaar.sql        # Bazaar seed data
+├── packages/                  # Shared packages
+│   ├── agents/                # Agent utilities
+│   ├── hardware/              # Hardware detection
+│   └── ollama/                # Ollama integration
+├── config/                    # Configuration files
+└── scripts/                   # Utility scripts
+```
+
+---
+
+## Core Principles
+
+1. **Every Layer is a Mill** — components transform inputs to outputs
+2. **Progressive Disclosure** — Toy → Guide → Scribe → Forge
+3. **No Code Lies** — all AI output verifiable
+4. **Community First** — share, fork, merge, improve
+5. **Work Ratio Transparency** — show AI vs human contribution
+
+---
+
+## The Bazaar (Community Platform)
+
+### Features
+- Share any simulation/puzzle/agent to community
+- Like and comment on creations
+- Fuse Grade verification (community quality levels 1-4)
+- Fork any public creation
+- Merge requests (creator approval)
+- Grain tokens for valuable contributions
+
+### Millfile Format
+Every creation has a `Millfile.toml`:
+
+```toml
+[meta]
+title = "Basic Circuit Simulator"
+author = "learner123"
+quality = 2  # 1=experimental, 2=working, 3=verified, 4=excellent
+
+[simulation]
+godot_version = "4.3"
+scene = "circuit_simulator.tscn"
+
+[ai]
+model_used = "claude-opus-4-5"
+work_ratio = 0.73  # AI did 73%
+verified = true
+
+[permissions]
+fork_enabled = true
+merge_enabled = true
+```
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| IDE Shell | Theia 1.54+ |
+| Language | TypeScript 5.7+ |
+| Build | Turborepo 2.3+ |
+| Backend | Cloudflare Workers |
+| Database | D1 (SQLite) |
+| Storage | R2, KV, Vectorize |
+| Simulation | Godot 4.3 |
+| Runtime | Node.js 20+ |
+
+---
+
+## Roadmap Phases
+
+### Phase 1: Foundation (Complete)
+- Theia shell working
+- Godot panel embedding
+- Multi-model router with cascade
+- Agent dashboard
+- Voice assistant (G-Assist)
+
+### Phase 2: Code Generation (Complete)
+- AI generates Theia extensions
+- AI generates Godot scenes
+- Quality selector (fast/cheap to slow/premium)
+- Work ratio transparency
+- Verification + rollback
+- Generation history
+
+### Phase 3: Bazaar (Complete)
+- User profiles + reputation
+- Share to community
+- Like/comment system
+- Fork/merge flows
+- Grain token economy
+- Fuse Grade verification
+
+### Phase 4: Self-Generation (Planned)
+- AI generates puzzles from progress
+- AI remixes two creations
+- Seasonal challenges
+- Leaderboards
+- Quality sorting
+
+### Phase 5: Multi-Product (Planned)
+- DMLoG.AI - TTRPG with AI agents
+- MakerLoG.AI - IoT/Robotics marketplace
+- FishingLoG.AI - Ecological simulation
+- Unified authentication
+- Cross-product asset sharing
+
+---
+
+## When Working Here
+
+1. **StudyLoG.AI is reference** — build education-first
+2. **Product-agnostic** — would DMLoG.AI use this?
+3. **Simulate first** — can it be simulated before deployed?
+4. **Bazaar mindset** — could this be shared, rated, forked?
 5. **Progressive complexity** — beginners see simple, experts see power
 
 ---
 
-## Key Technologies
+## Commands
 
-- **Theia IDE**: 1.54.0 (upgrade path to 1.67.0 available)
-- **TypeScript**: 5.7.3 (ESM modules)
-- **Turborepo**: 2.3.3 for parallel builds
-- **Node.js**: 20+ (LTS)
-- **React**: 18.x
-- **Cloudflare Workers**: For backend API
-- **D1**: SQLite database
-- **Vectorize**: Vector embeddings
-- **R2**: Object storage
-- **KV**: Key-value cache
-- **Godot**: 4.3 for game/simulation engine
+```bash
+pnpm dev              # Start all dev servers
+pnpm build            # Build all packages
+pnpm test             # Run tests
+pnpm typecheck        # Type check
+pnpm lint             # Lint
+pnpm backend:dev      # Backend only
+pnpm backend:deploy   # Deploy to Cloudflare
+```
 
 ---
 
-**Remember**: We're not trying to make students. We're building a network of thinkers and makers who will later design products on tools they grew up playing with.
+**Remember**: We're building a network of thinkers and makers who create products on tools they grew up playing with.

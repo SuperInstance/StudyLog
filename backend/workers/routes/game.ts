@@ -9,7 +9,7 @@ import type { Env } from '../types';
 export const gameRoutes = new Router();
 
 // POST /session/start - Start a new game session
-gameRoutes.post('/session/start', async (request, env) => {
+gameRoutes.post('/session/start', async (request, env: Env) => {
   const auth = await requireAuth(request, env);
   if (auth instanceof Response) return auth;
 
