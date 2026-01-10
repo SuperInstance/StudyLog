@@ -1,0 +1,43 @@
+{
+  "name": "studylog-backend",
+  "version": "0.1.0",
+  "description": "StudyLoG.AI Backend - Cloudflare Workers",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging",
+    "deploy:production": "wrangler deploy --env production",
+    "db:create": "wrangler d1 create studylog-students",
+    "db:migrate": "wrangler d1 execute studylog-students --file=./d1/schema.sql",
+    "db:migrate:local": "wrangler d1 execute studylog-students --local --file=./d1/schema.sql",
+    "db:seed": "wrangler d1 execute studylog-students --file=./d1/seed.sql",
+    "kv:create:session": "wrangler kv:namespace create SESSION_CACHE",
+    "kv:create:rate": "wrangler kv:namespace create RATE_LIMITS",
+    "r2:create:projects": "wrangler r2 bucket create studylog-projects",
+    "r2:create:assets": "wrangler r2 bucket create studylog-assets",
+    "vectorize:create": "wrangler vectorize create studylog-puzzles --dimensions=768 --metric=cosine",
+    "secret:set:jwt": "wrangler secret put JWT_SECRET",
+    "secret:set:anthropic": "wrangler secret put ANTHROPIC_API_KEY",
+    "tail": "wrangler tail",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint workers lib",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "build": "tsc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0",
+    "eslint": "^9.18.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.20.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

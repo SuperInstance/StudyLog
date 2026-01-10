@@ -1,0 +1,107 @@
+# StudyLoG.AI Backend - Cloudflare Workers Configuration
+# Free tier compatible - scales to paid when needed
+
+name = "studylog-backend"
+main = "workers/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Development settings
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Production environment
+[env.production]
+name = "studylog-backend-prod"
+routes = [
+  { pattern = "api.studylog.ai/*", zone_name = "studylog.ai" }
+]
+
+# Staging environment
+[env.staging]
+name = "studylog-backend-staging"
+
+# ═══════════════════════════════════════════════════════════
+# D1 Database - Student state, progress, and curriculum
+# Free tier: 5GB storage, 5M rows read/day, 100K writes/day
+# ═══════════════════════════════════════════════════════════
+[[d1_databases]]
+binding = "STUDENT_STATE"
+database_name = "studylog-students"
+database_id = "placeholder-will-be-created"
+
+# ═══════════════════════════════════════════════════════════
+# Vectorize - Semantic search for puzzles and curriculum
+# Free tier: 5M vector queries/month, 200K vectors stored
+# ═══════════════════════════════════════════════════════════
+[[vectorize]]
+binding = "PUZZLE_INDEX"
+index_name = "studylog-puzzles"
+
+# ═══════════════════════════════════════════════════════════
+# R2 Storage - Project files, assets, saves
+# Free tier: 10GB storage, 1M Class A ops, 10M Class B ops
+# ═══════════════════════════════════════════════════════════
+[[r2_buckets]]
+binding = "PROJECT_STORAGE"
+bucket_name = "studylog-projects"
+
+[[r2_buckets]]
+binding = "ASSET_STORAGE"
+bucket_name = "studylog-assets"
+
+# ═══════════════════════════════════════════════════════════
+# KV Namespace - Fast session state, rate limiting
+# Free tier: 100K reads/day, 1K writes/day
+# ═══════════════════════════════════════════════════════════
+[[kv_namespaces]]
+binding = "SESSION_CACHE"
+id = "placeholder-will-be-created"
+
+[[kv_namespaces]]
+binding = "RATE_LIMITS"
+id = "placeholder-will-be-created"
+
+# ═══════════════════════════════════════════════════════════
+# Workers AI - Inference at the edge
+# Free tier: 10,000 neurons/day (~300 Llama requests)
+# ═══════════════════════════════════════════════════════════
+[ai]
+binding = "AI"
+
+# ═══════════════════════════════════════════════════════════
+# Durable Objects - Real-time game state (paid feature)
+# Commented out for free tier, enable when needed
+# ═══════════════════════════════════════════════════════════
+# [[durable_objects.bindings]]
+# name = "GAME_SESSION"
+# class_name = "GameSession"
+
+# [[migrations]]
+# tag = "v1"
+# new_classes = ["GameSession"]
+
+# ═══════════════════════════════════════════════════════════
+# Environment Variables
+# ═══════════════════════════════════════════════════════════
+[vars]
+ENVIRONMENT = "development"
+LOG_LEVEL = "debug"
+MAX_TOKENS_PER_REQUEST = "2048"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "60"
+
+# Secrets (set via wrangler secret put)
+# - ANTHROPIC_API_KEY
+# - OLLAMA_ENDPOINT (optional, for local AI)
+# - JWT_SECRET
+
+# ═══════════════════════════════════════════════════════════
+# Build Configuration
+# ═══════════════════════════════════════════════════════════
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "modules"

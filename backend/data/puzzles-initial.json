@@ -1,0 +1,293 @@
+{
+  "puzzles": [
+    {
+      "id": "cm-001",
+      "module": "cognitive-mill",
+      "stage": 1,
+      "title": "Water Wheel Power",
+      "description": "Calculate the power output of a water wheel based on flow rate and height.",
+      "difficulty": 1,
+      "xpReward": 10,
+      "tags": ["gear-ratios", "energy-transfer"],
+      "hints": [
+        "Power is related to the rate of energy transfer.",
+        "Gravitational potential energy depends on height.",
+        "P = m × g × h / t, where m/t is the flow rate."
+      ]
+    },
+    {
+      "id": "cm-002",
+      "module": "cognitive-mill",
+      "stage": 1,
+      "title": "Gear Ratio Calculator",
+      "description": "Given a driving gear with 10 teeth and a driven gear with 30 teeth, calculate the gear ratio.",
+      "difficulty": 1,
+      "xpReward": 10,
+      "tags": ["gear-ratios", "mechanics"],
+      "hints": [
+        "Gear ratio = Driven teeth / Driving teeth",
+        "A ratio of 3:1 means the output spins 3x slower but with 3x torque.",
+        "The answer is 3:1 or simply 3."
+      ]
+    },
+    {
+      "id": "cm-003",
+      "module": "cognitive-mill",
+      "stage": 2,
+      "title": "Steam Pressure Control",
+      "description": "Design a feedback loop to maintain constant steam pressure in a boiler.",
+      "difficulty": 2,
+      "xpReward": 20,
+      "tags": ["feedback-loops", "systems"],
+      "hints": [
+        "What happens when pressure is too high?",
+        "A relief valve releases excess pressure.",
+        "Negative feedback maintains stability."
+      ]
+    },
+    {
+      "id": "cm-004",
+      "module": "cognitive-mill",
+      "stage": 3,
+      "title": "Binary Message Encoding",
+      "description": "Encode the letter 'A' (ASCII 65) in 8-bit binary.",
+      "difficulty": 2,
+      "xpReward": 20,
+      "tags": ["binary-encoding", "communication"],
+      "hints": [
+        "65 in binary: start by finding powers of 2.",
+        "64 + 1 = 65, so bits 6 and 0 are set.",
+        "The answer is 01000001."
+      ]
+    },
+    {
+      "id": "cm-005",
+      "module": "cognitive-mill",
+      "stage": 4,
+      "title": "Logic Gate Circuit",
+      "description": "Create a circuit using AND, OR, NOT gates that outputs 1 only when exactly one of two inputs is 1.",
+      "difficulty": 3,
+      "xpReward": 30,
+      "tags": ["logic-gates", "logic"],
+      "hints": [
+        "This is called XOR (exclusive OR).",
+        "XOR = (A AND NOT B) OR (NOT A AND B)",
+        "Think about when each case produces a 1."
+      ]
+    },
+    {
+      "id": "cm-006",
+      "module": "cognitive-mill",
+      "stage": 5,
+      "title": "Neural Network Basics",
+      "description": "A neuron has inputs [0.5, 0.3] with weights [0.4, 0.6]. Calculate the weighted sum.",
+      "difficulty": 2,
+      "xpReward": 25,
+      "tags": ["neural-basics", "agents"],
+      "hints": [
+        "Weighted sum = Σ(input × weight)",
+        "(0.5 × 0.4) + (0.3 × 0.6)",
+        "The answer is 0.38."
+      ]
+    },
+    {
+      "id": "ss-001",
+      "module": "sitka-sound",
+      "stage": 1,
+      "title": "Optimal Fishing Spot",
+      "description": "Given fish density maps, identify the location with highest expected catch.",
+      "difficulty": 1,
+      "xpReward": 10,
+      "tags": ["resource-gathering", "economics"],
+      "hints": [
+        "Look for areas with highest concentration.",
+        "Consider travel time to the spot.",
+        "Expected value = probability × payoff."
+      ]
+    },
+    {
+      "id": "ss-002",
+      "module": "sitka-sound",
+      "stage": 2,
+      "title": "Fleet Coordination",
+      "description": "Assign 3 boats to 5 fishing zones to maximize total catch without overlap.",
+      "difficulty": 3,
+      "xpReward": 30,
+      "tags": ["coordination", "communication"],
+      "hints": [
+        "Each boat should have a unique zone.",
+        "Prioritize zones with highest yield.",
+        "Consider distance between zones."
+      ]
+    },
+    {
+      "id": "ss-003",
+      "module": "sitka-sound",
+      "stage": 3,
+      "title": "Market Price Prediction",
+      "description": "Based on supply trends, predict whether fish prices will rise or fall next week.",
+      "difficulty": 3,
+      "xpReward": 35,
+      "tags": ["market-dynamics", "economics"],
+      "hints": [
+        "High supply = lower prices.",
+        "Look at the trend, not just current values.",
+        "Consider seasonal patterns."
+      ]
+    },
+    {
+      "id": "ss-004",
+      "module": "sitka-sound",
+      "stage": 4,
+      "title": "Sustainable Harvest",
+      "description": "Calculate the maximum sustainable yield for a fish population with growth rate 0.3 and carrying capacity 10000.",
+      "difficulty": 4,
+      "xpReward": 40,
+      "tags": ["ecosystem-balance", "systems"],
+      "hints": [
+        "MSY = (r × K) / 4",
+        "r = growth rate, K = carrying capacity",
+        "The answer is 750 fish per period."
+      ]
+    },
+    {
+      "id": "ss-005",
+      "module": "sitka-sound",
+      "stage": 5,
+      "title": "Fishing Bot Design",
+      "description": "Define the decision rules for an autonomous fishing agent.",
+      "difficulty": 4,
+      "xpReward": 45,
+      "tags": ["agent-design", "agents"],
+      "hints": [
+        "What inputs does the agent need?",
+        "Define rules: IF condition THEN action.",
+        "Consider edge cases and failures."
+      ]
+    },
+    {
+      "id": "ir-001",
+      "module": "intelligence-ranch",
+      "stage": 1,
+      "title": "Sheep Herding Basics",
+      "description": "Move a sheep from point A to point B using only left/right/forward commands.",
+      "difficulty": 1,
+      "xpReward": 10,
+      "tags": ["direct-control", "mechanics"],
+      "hints": [
+        "Break the path into simple moves.",
+        "One command at a time.",
+        "Watch the sheep's response before the next command."
+      ]
+    },
+    {
+      "id": "ir-002",
+      "module": "intelligence-ranch",
+      "stage": 2,
+      "title": "Dog Training Protocol",
+      "description": "Create a 3-command vocabulary for a herding dog.",
+      "difficulty": 2,
+      "xpReward": 20,
+      "tags": ["command-protocols", "communication"],
+      "hints": [
+        "Commands should be distinct and clear.",
+        "Consider: Come, Go, Stop as basics.",
+        "Each command needs a unique sound/signal."
+      ]
+    },
+    {
+      "id": "ir-003",
+      "module": "intelligence-ranch",
+      "stage": 3,
+      "title": "Multi-Dog Coordination",
+      "description": "Assign 2 dogs to herd a flock through a maze with minimal commands.",
+      "difficulty": 4,
+      "xpReward": 40,
+      "tags": ["delegation", "coordination"],
+      "hints": [
+        "Position dogs on opposite sides.",
+        "Use one dog to block, one to drive.",
+        "Minimize total commands for efficiency."
+      ]
+    },
+    {
+      "id": "ir-004",
+      "module": "intelligence-ranch",
+      "stage": 4,
+      "title": "Breeding Optimization",
+      "description": "Select breeding pairs to maximize a target trait over 3 generations.",
+      "difficulty": 4,
+      "xpReward": 45,
+      "tags": ["optimization", "logic"],
+      "hints": [
+        "Track trait values across generations.",
+        "Higher trait parents tend to produce higher trait offspring.",
+        "Consider genetic diversity."
+      ]
+    },
+    {
+      "id": "ir-005",
+      "module": "intelligence-ranch",
+      "stage": 5,
+      "title": "Emergent Flock Behavior",
+      "description": "Define 3 simple rules that cause sheep to naturally flock together.",
+      "difficulty": 5,
+      "xpReward": 50,
+      "tags": ["emergent-behavior", "systems"],
+      "hints": [
+        "Boids algorithm: separation, alignment, cohesion.",
+        "Each sheep follows these rules locally.",
+        "Global flocking emerges from local rules."
+      ]
+    }
+  ],
+  "templates": [
+    {
+      "id": "tpl-gear-ratio",
+      "module": "cognitive-mill",
+      "stage": 1,
+      "title": "Gear Ratio Problem",
+      "description": "Calculate gear ratio from tooth counts",
+      "difficulty": 1,
+      "skills": ["gear-ratios"],
+      "templateType": "fill-in",
+      "template": "A driving gear has {{drivingTeeth}} teeth and meshes with a driven gear of {{drivenTeeth}} teeth. What is the gear ratio?",
+      "variables": [
+        {"name": "drivingTeeth", "type": "number", "constraints": {"min": 8, "max": 20}},
+        {"name": "drivenTeeth", "type": "number", "constraints": {"min": 20, "max": 60}}
+      ],
+      "validationFn": "return variables.drivenTeeth / variables.drivingTeeth;"
+    },
+    {
+      "id": "tpl-binary",
+      "module": "cognitive-mill",
+      "stage": 3,
+      "title": "Binary Conversion",
+      "description": "Convert decimal to binary",
+      "difficulty": 2,
+      "skills": ["binary-encoding"],
+      "templateType": "fill-in",
+      "template": "Convert the decimal number {{decimal}} to 8-bit binary.",
+      "variables": [
+        {"name": "decimal", "type": "number", "constraints": {"min": 0, "max": 255}}
+      ],
+      "validationFn": "return variables.decimal.toString(2).padStart(8, '0');"
+    },
+    {
+      "id": "tpl-supply-demand",
+      "module": "sitka-sound",
+      "stage": 3,
+      "title": "Supply and Demand",
+      "description": "Predict price direction",
+      "difficulty": 3,
+      "skills": ["market-dynamics"],
+      "templateType": "multiple-choice",
+      "template": "Supply increased by {{supplyChange}}% and demand decreased by {{demandChange}}%. What happens to price?",
+      "variables": [
+        {"name": "supplyChange", "type": "number", "constraints": {"min": 5, "max": 30}},
+        {"name": "demandChange", "type": "number", "constraints": {"min": 5, "max": 30}}
+      ],
+      "validationFn": "return 'decreases';"
+    }
+  ]
+}
