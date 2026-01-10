@@ -1,0 +1,34 @@
+{
+  "name": "studylog",
+  "version": "0.1.0",
+  "description": "StudyLoG.AI - Progressive AI-native IDE that teaches through simulation",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "backend",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "detect-hardware": "npx tsx scripts/detect-hardware.ts",
+    "setup-ollama": "./scripts/setup-ollama.sh",
+    "setup-jetson": "./scripts/setup-jetson.sh",
+    "backend:dev": "npm run dev --workspace=backend",
+    "backend:deploy": "npm run deploy --workspace=backend"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}

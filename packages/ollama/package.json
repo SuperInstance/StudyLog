@@ -1,0 +1,37 @@
+{
+  "name": "@studylog/ollama",
+  "version": "0.1.0",
+  "description": "Ollama integration for StudyLoG.AI",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "health": "npx tsx -e \"import { createClient } from './client'; createClient().then(c => console.log(c ? 'Ollama OK' : 'Ollama not running'))\""
+  },
+  "dependencies": {
+    "@studylog/hardware": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "tsx": "^4.19.2"
+  }
+}
