@@ -1,0 +1,37 @@
+{
+  "name": "@studylog/agents",
+  "version": "0.1.0",
+  "description": "AI Agent system for StudyLoG.AI",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./director": {
+      "types": "./dist/agents/director.d.ts",
+      "import": "./dist/agents/director.js"
+    },
+    "./captain": {
+      "types": "./dist/agents/captain.d.ts",
+      "import": "./dist/agents/captain.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@studylog/ollama": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}
