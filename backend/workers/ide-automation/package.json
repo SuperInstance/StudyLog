@@ -1,0 +1,23 @@
+{
+  "name": "@studylog/ide-automation",
+  "version": "1.0.0",
+  "description": "IDE automation patterns for StudyLoG.AI - Cursor-class features in Theia",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0",
+    "wrangler": "^3.22.0"
+  }
+}

@@ -1,0 +1,40 @@
+name = "ide-automation"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# KV Namespaces for chat history and caching
+[[kv_namespaces]]
+binding = "CHAT_HISTORY"
+id = "chat_history"
+preview_id = "chat_history_preview"
+
+[[kv_namespaces]]
+binding = "CONTEXT_CACHE"
+id = "context_cache"
+preview_id = "context_cache_preview"
+
+# D1 Database for persistent storage
+[[d1_databases]]
+binding = "IDE_STATE"
+database_name = "ide_automation_state"
+database_id = "ide_automation_db"
+
+# R2 for file storage
+[[r2_buckets]]
+binding = "WORKSPACE_STORAGE"
+bucket_name = "ide-workspace-files"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "development"
+MAX_CONTEXT_TOKENS = "128000"
+MAX_HISTORY_MESSAGES = "100"
+STREAM_CHUNK_SIZE = "100"
+
+# Secrets (set via: wrangler secret put <KEY>)
+# - DEEPSEEK_API_KEY
+# - ZHIPU_API_KEY
+# - ANTHROPIC_API_KEY
+# - OPENAI_API_KEY
+# - NVIDIA_API_KEY
+# - JWT_SECRET
