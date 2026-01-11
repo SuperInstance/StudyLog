@@ -1,0 +1,65 @@
+{
+  "name": "@studylog/ranch-simulation",
+  "version": "1.0.0",
+  "description": "Progressive AI ranch simulation system with animal herding, dog training, and quality scaling",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "types": "./index.ts"
+    },
+    "./types": "./types.ts",
+    "./species": "./species-registry.ts",
+    "./animal-ai": "./animal-ai.ts",
+    "./flocking": "./flocking-behavior.ts",
+    "./dog-training": "./dog-training.ts",
+    "./herd-manager": "./herd-manager.ts",
+    "./ranch-state": "./ranch-state.ts",
+    "./quality-scaling": "./quality-scaling.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "ranch",
+    "simulation",
+    "ai",
+    "flocking",
+    "boids",
+    "herding",
+    "dogs",
+    "animals",
+    "progressive",
+    "quality-scaling",
+    "godot",
+    "microverse",
+    "luanti",
+    "openrts"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {
+    "@studylog/quality-scaling": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "@vitest/coverage-v8": "^1.2.0",
+    "eslint": "^8.56.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "*.ts",
+    "!*.test.ts",
+    "!**/*.test.ts"
+  ]
+}

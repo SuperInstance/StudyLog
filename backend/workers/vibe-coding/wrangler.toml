@@ -1,0 +1,67 @@
+# Wrangler configuration for vibe-coding worker
+
+name = "vibe-coding"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Account ID (from Cloudflare)
+# account_id = ""
+
+# Routes
+# routes = [
+#   { pattern = "https://vibe-coding.studylog.ai/*", zone_name = "studylog.ai" }
+# ]
+
+# KV Namespaces
+[[kv_namespaces]]
+binding = "CHAT_HISTORY"
+id = "kv_chat_history"
+preview_id = "kv_chat_history_preview"
+
+[[kv_namespaces]]
+binding = "CONTEXT_CACHE"
+id = "kv_context_cache"
+preview_id = "kv_context_cache_preview"
+
+[[kv_namespaces]]
+binding = "PRESENCE"
+id = "kv_presence"
+preview_id = "kv_presence_preview"
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "vibe_coding_db"
+database_id = "d1_vibe_coding_db"
+
+# R2 Storage (optional)
+[[r2_buckets]]
+binding = "WORKSPACE_STORAGE"
+bucket_name = "studylog-workspaces"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+MAX_CONTEXT_TOKENS = "128000"
+MAX_HISTORY_MESSAGES = "100"
+
+# Secrets (set via: wrangler secret put <KEY>)
+# - DEEPSEEK_API_KEY
+# - ZHIPU_API_KEY
+# - ANTHROPIC_API_KEY
+# - OPENAI_API_KEY
+# - GOOGLE_API_KEY
+# - NVIDIA_API_KEY
+
+# Worker limits
+[limits]
+cpu_ms = 10000
+
+# Build configuration
+[build]
+command = ""
+
+# Observability
+[observability]
+enabled = true
+head Sampling_rate = 1

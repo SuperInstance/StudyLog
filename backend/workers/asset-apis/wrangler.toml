@@ -1,0 +1,21 @@
+name = "asset-apis"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.r2_buckets]]
+binding = "ASSET_CACHE"
+bucket_name = "studylog-assets"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "asset-registry"
+database_id = "your-database-id"
+
+[vars]
+ENVIRONMENT = "production"

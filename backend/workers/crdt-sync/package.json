@@ -1,0 +1,48 @@
+{
+  "name": "@studylog/crdt-sync",
+  "version": "1.0.0",
+  "description": "Real-time CRDT-based collaboration system for StudyLoG.AI and DMLoG.AI",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./types": "./types.ts",
+    "./crdt-engine": "./crdt-engine.ts",
+    "./document-sync": "./document-sync.ts",
+    "./presence": "./presence-awareness.ts",
+    "./conflict": "./conflict-resolution.ts",
+    "./gateway": "./websocket-gateway.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node --loader ts-node/esm ./index.ts",
+    "test": "vitest",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [
+    "crdt",
+    "collaboration",
+    "real-time",
+    "websocket",
+    "presence",
+    "conflict-resolution"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

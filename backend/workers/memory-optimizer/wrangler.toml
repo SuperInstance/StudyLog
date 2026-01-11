@@ -1,0 +1,62 @@
+# Memory Optimizer Worker Configuration
+# Cloudflare Worker for StudyLoG.AI 6-tier memory system optimization
+
+name = "studylog-memory-optimizer"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+# Account ID (set via: wrangler login)
+# account_id = "your-account-id"
+
+# ═══════════════════════════════════════════════════════════
+# Routes
+# ═══════════════════════════════════════════════════════════
+
+# Production route
+# routes = [
+#   { pattern = "https://api.studylog.ai/memory/*", zone_name = "studylog.ai" }
+# ]
+
+# ═══════════════════════════════════════════════════════════
+# KV Namespaces
+# ═══════════════════════════════════════════════════════════
+
+# Cache for consolidated memories
+[[kv_namespaces]]
+binding = "MEMORY_CACHE"
+id = "your-kv-namespace-id"
+# Create via: wrangler kv:namespace create "MEMORY_CACHE"
+
+# ═══════════════════════════════════════════════════════════
+# D1 Databases
+# ═══════════════════════════════════════════════════════════
+
+# Persistent memory storage
+[[d1_databases]]
+binding = "DB"
+database_name = "studylog_memory_db"
+database_id = "your-database-id"
+# Create via: wrangler d1 create studylog_memory_db
+
+# ═══════════════════════════════════════════════════════════
+# Environment Variables
+# ═══════════════════════════════════════════════════════════
+
+# Vector database for production (optional - uses in-memory by default)
+# [vars]
+# VECTOR_DB_URL = "https://your-vector-db.com"
+# VECTOR_DB_API_KEY = "your-api-key"
+
+# ═══════════════════════════════════════════════════════════
+# Build Configuration
+# ═══════════════════════════════════════════════════════════
+
+[build]
+command = "npm run build:worker"
+
+# ═══════════════════════════════════════════════════════════
+# Deployment Limits
+# ═══════════════════════════════════════════════════════════
+
+[limits]
+cpu_ms = 30000

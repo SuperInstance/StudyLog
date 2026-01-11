@@ -1,0 +1,97 @@
+# Cloudflare Worker Configuration for 3D Asset API
+# StudyLoG.AI / DMLoG.AI - 3D Asset Generation Service
+
+name = "studylog-asset-3d"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment configurations
+env = "production"
+
+# Route configuration (when deployed)
+# routes = [
+#   { pattern = "api.studylog.ai/asset-3d/*", zone_name = "studylog.ai" }
+# ]
+
+# KV Namespaces for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "YOUR_KV_NAMESPACE_ID"
+preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID"
+
+# D1 Database for asset metadata
+[[d1_databases]]
+binding = "DB"
+database_name = "studylog-assets-3d"
+database_id = "YOUR_D1_DATABASE_ID"
+
+# R2 Bucket for asset storage
+[[r2_buckets]]
+binding = "ASSETS_BUCKET"
+bucket_name = "studylog-3d-assets"
+
+# Staging environment
+[env.staging]
+name = "studylog-asset-3d-staging"
+routes = [
+  { pattern = "api-staging.studylog.ai/asset-3d/*", zone_name = "studylog.ai" }
+]
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE"
+id = "YOUR_STAGING_KV_NAMESPACE_ID"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "studylog-assets-3d-staging"
+database_id = "YOUR_STAGING_D1_DATABASE_ID"
+
+# Production environment
+[env.production]
+name = "studylog-asset-3d-prod"
+routes = [
+  { pattern = "api.studylog.ai/asset-3d/*", zone_name = "studylog.ai" }
+]
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = "YOUR_PRODUCTION_KV_NAMESPACE_ID"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "studylog-assets-3d-prod"
+database_id = "YOUR_PRODUCTION_D1_DATABASE_ID"
+
+[[env.production.r2_buckets]]
+binding = "ASSETS_BUCKET"
+bucket_name = "studylog-3d-assets-prod"
+
+# Build configuration
+[build]
+command = "npm run build"
+
+# Variables (set via `wrangler secret put` or in dashboard)
+# Variables are defined here for documentation only
+# Set actual values using: wrangler secret put <NAME> --env production
+
+# Provider API Keys (set via secrets)
+# HUNYUAN_API_KEY
+# SLOYD_API_KEY
+# MASTERPIECE_X_API_KEY
+# TRIPO_API_KEY
+# RODIN_API_KEY
+# MESHY_API_KEY
+
+# Optional configuration
+# ASSETS_PATH = "res://assets/models/"
+# DEFAULT_QUALITY = "standard"
+# MAX_CONCURRENT_REQUESTS = "10"
+
+# Limits
+[limits]
+cpu_ms = 30000  # 30 seconds CPU time
+
+# Trigger scheduled tasks
+[triggers]
+crons = ["0 * * * *"]  # Run every hour

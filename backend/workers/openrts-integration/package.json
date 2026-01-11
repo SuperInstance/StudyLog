@@ -1,0 +1,60 @@
+{
+  "name": "@studylog/openrts-integration",
+  "version": "0.1.0",
+  "description": "OpenRTS (godot-open-rts) integration for StudyLoG.AI and DMLoG.AI",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "types": "./index.ts"
+    },
+    "./types": {
+      "import": "./types.ts",
+      "types": "./types.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest"
+  },
+  "keywords": [
+    "godot",
+    "rts",
+    "game",
+    "3d",
+    "studylog",
+    "dmlog",
+    "opents",
+    "integration"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {
+    "@studylog/godot-integration": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.7.0",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SuperInstance/studylog-github",
+    "directory": "backend/workers/openrts-integration"
+  },
+  "peerDependencies": {
+    "godot-open-rts": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "godot-open-rts": {
+      "optional": true
+    }
+  }
+}

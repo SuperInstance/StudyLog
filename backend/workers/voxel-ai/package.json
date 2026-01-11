@@ -1,0 +1,36 @@
+{
+  "name": "@studylog/voxel-ai-worker",
+  "version": "1.0.0",
+  "description": "Voxel AI Asset Integration Worker for StudyLoG.AI and DMLoG.AI",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "voxel",
+    "godot",
+    "ai",
+    "ollama",
+    "limboai",
+    "meshy",
+    "leonardo-ai",
+    "studylog",
+    "dmlog"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {
+    "@studylog/godot-integration": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241127.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.94.0"
+  }
+}

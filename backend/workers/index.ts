@@ -2,15 +2,17 @@
  * StudyLoG.AI Backend - Main Worker Entry Point
  *
  * Routes:
- * - /api/v1/auth/*     - Authentication
- * - /api/v1/student/*  - Student state and progress
- * - /api/v1/ai/*       - AI inference routing
- * - /api/v1/game/*     - Game state sync
- * - /api/v1/assets/*   - Asset management
- * - /api/v1/bazaar/*   - Community marketplace
- * - /api/v1/generate/* - Code generation
- * - /api/v1/images/*   - Image generation with cascade routing (NEW)
- * - /health            - Health check
+ * - /api/v1/auth/*         - Authentication
+ * - /api/v1/student/*      - Student state and progress
+ * - /api/v1/ai/*           - AI inference routing
+ * - /api/v1/game/*         - Game state sync
+ * - /api/v1/assets/*       - Asset management
+ * - /api/v1/bazaar/*       - Community marketplace
+ * - /api/v1/generate/*     - Code generation
+ * - /api/v1/images/*       - Image generation with cascade routing
+ * - /api/v1/agents/*       - Multi-agent orchestration (DMLoG/StudyLoG unified)
+ * - /api/v1/spec-driven/*  - Spec-driven development with self-healing
+ * - /health                - Health check
  */
 
 import { Router } from './router';
@@ -23,6 +25,8 @@ import { errorHandler, corsHeaders, rateLimiter } from './middleware';
 import { handleBazaarRequest } from './bazaar';
 import { handleCodeGeneratorRequest } from './code-generator';
 import { handleImageCascadeRequest } from './image-cascade';
+import { handleAgentRequest } from './dmlog-agents/src/api/handlers.js';
+import { handleSpecDrivenRequest } from './spec-driven/src/index.js';
 import type { Env } from './types';
 
 const router = new Router();
@@ -49,7 +53,7 @@ export default {
       const url = new URL(request.url);
       const pathname = url.pathname;
 
-      // Handle new worker routes directly (bazaar, code-generator, image-cascade)
+      // Handle new worker routes directly (bazaar, code-generator, image-cascade, dmlog-agents, spec-driven)
       if (pathname.startsWith('/api/v1/bazaar')) {
         return handleBazaarRequest(request, env, ctx);
       }
@@ -58,6 +62,12 @@ export default {
       }
       if (pathname.startsWith('/api/v1/images')) {
         return handleImageCascadeRequest(request, env, ctx);
+      }
+      if (pathname.startsWith('/api/v1/agents')) {
+        return handleAgentRequest(request, env);
+      }
+      if (pathname.startsWith('/api/v1/spec-driven')) {
+        return handleSpecDrivenRequest(request, env, ctx);
       }
 
       // CORS preflight

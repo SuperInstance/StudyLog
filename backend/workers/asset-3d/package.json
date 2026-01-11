@@ -1,0 +1,52 @@
+{
+  "name": "@studylog/asset-3d",
+  "version": "1.0.0",
+  "description": "3D Asset API - Multi-provider 3D model and world generation for StudyLoG.AI and DMLoG.AI",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler publish",
+    "deploy:staging": "wrangler publish --env staging",
+    "deploy:production": "wrangler publish --env production",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0",
+    "eslint": "^9.18.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.20.0"
+  },
+  "keywords": [
+    "3d",
+    "3d-models",
+    "ai",
+    "asset-generation",
+    "godot",
+    "hunyuan",
+    "sloyd",
+    "tripo",
+    "rodin",
+    "meshy",
+    "masterpiece-x",
+    "studylog",
+    "dmlog",
+    "cloudflare-workers"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "SuperInstance.AI",
+  "license": "MIT"
+}

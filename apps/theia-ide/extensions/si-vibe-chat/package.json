@@ -1,0 +1,46 @@
+{
+  "name": "@studylog/si-vibe-chat",
+  "version": "0.1.0",
+  "description": "Vibe Coding Chat System - AI-native chat interface with streaming responses, diff-first editing, and agent coordination",
+  "license": "MIT",
+  "keywords": [
+    "theia-extension",
+    "ai",
+    "chat",
+    "vibe-coding",
+    "streaming",
+    "diff-editor"
+  ],
+  "files": [
+    "lib",
+    "src"
+  ],
+  "main": "lib/common/index.js",
+  "types": "lib/common/index.d.ts",
+  "dependencies": {
+    "@theia/core": "1.54.0",
+    "@theia/editor": "1.54.0",
+    "@theia/messages": "1.54.0",
+    "@theia/monaco": "1.54.0",
+    "@theia/workspace": "1.54.0",
+    "react-markdown": "^9.0.1",
+    "react-syntax-highlighter": "^15.5.0"
+  },
+  "devDependencies": {
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/diff": "^5.2.1",
+    "typescript": "^5.7.3",
+    "rimraf": "^6.0.1"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/si-vibe-chat-frontend-module",
+      "backend": "lib/node/si-vibe-chat-backend-module"
+    }
+  ]
+}

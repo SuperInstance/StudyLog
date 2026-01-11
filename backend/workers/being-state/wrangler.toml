@@ -1,0 +1,117 @@
+# Being State System - Cloudflare Worker Configuration
+#
+# A comprehensive system for managing multi-layered being states in Godot simulations.
+# Integrates generative AI for visual/audio transformations, vibe coding for gameplay
+# mutations, and ACE-powered agent intelligence.
+#
+# Deploy: wrangler publish
+
+name = "being-state-system"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+# ============================================================================
+# Environment Variables
+# ============================================================================
+
+[vars]
+ENVIRONMENT = "production"
+LOG_LEVEL = "info"
+
+# ============================================================================
+# KV Namespaces
+# ============================================================================
+
+[[kv_namespaces]]
+binding = "BEING_STATE_CACHE"
+id = "being_state_cache"
+preview_id = "being_state_cache_preview"
+
+[[kv_namespaces]]
+binding = "STATE_TRANSITION_CACHE"
+id = "state_transition_cache"
+preview_id = "state_transition_cache_preview"
+
+# ============================================================================
+# D1 Databases
+# ============================================================================
+
+[[d1_databases]]
+binding = "BEING_STATE_DB"
+database_name = "being_state_db"
+database_id = "your-database-id" # Replace with actual D1 database ID
+
+# ============================================================================
+# R2 Storage
+# ============================================================================
+
+[[r2_buckets]]
+binding = "ASSET_STORAGE"
+bucket_name = "being-state-assets"
+
+# ============================================================================
+# Queues
+# ============================================================================
+
+[[queues.producers]]
+binding = "STATE_TRANSITION_QUEUE"
+queue = "state-transition-queue"
+
+# ============================================================================
+# Service Bindings (for connecting to other workers)
+# ============================================================================
+
+[env.production]
+
+[env.production.vars]
+ENVIRONMENT = "production"
+LOG_LEVEL = "warn"
+
+[[env.production.kv_namespaces]]
+binding = "BEING_STATE_CACHE"
+id = "being_state_cache"
+
+[[env.production.d1_databases]]
+binding = "BEING_STATE_DB"
+database_name = "being_state_db"
+database_id = "your-production-database-id"
+
+[env.development]
+
+[env.development.vars]
+ENVIRONMENT = "development"
+LOG_LEVEL = "debug"
+
+# ============================================================================
+# Build Configuration
+# ============================================================================
+
+[build]
+command = "npm run build:being-state"
+
+[build.upload]
+format = "modules"
+main = "./index.ts"
+
+# ============================================================================
+# Rules for routing (if using custom domain)
+# ============================================================================
+
+# [[routes]]
+# pattern = "being-state.example.com/*"
+# zone_name = "example.com"
+
+# ============================================================================
+# Limits and timeouts
+# ============================================================================
+
+[limits]
+cpu_ms = 30000
+
+# ============================================================================
+# Triggers (scheduled events)
+# ============================================================================
+
+# Scheduled cleanup of expired states (hourly)
+[[triggers]]
+crons = ["0 * * * *"]

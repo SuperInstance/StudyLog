@@ -1,0 +1,39 @@
+{
+  "name": "@studylog/dmlog-characters",
+  "version": "0.1.0",
+  "description": "DMLoG.AI Character Persistence System - Cross-product character storage with memory integration",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "dmlog",
+    "character",
+    "persistence",
+    "ttrpg",
+    "ai",
+    "memory",
+    "undo-redo"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {
+    "@studylog/character-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

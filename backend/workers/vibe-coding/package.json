@@ -1,0 +1,22 @@
+{
+  "name": "@studylog/vibe-coding",
+  "version": "1.0.0",
+  "description": "Vibe-coding chat interface with Cursor/Windsurf style streaming",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "itty-router": "^4.0.20"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^3.101.0",
+    "vitest": "^2.1.9"
+  }
+}

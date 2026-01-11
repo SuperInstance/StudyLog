@@ -1,0 +1,69 @@
+# Voxel AI Asset Integration Worker
+# Cloudflare Worker configuration for StudyLoG.AI and DMLoG.AI
+
+name = "voxel-ai-worker"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+
+# KV Namespaces for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "your_kv_namespace_id"
+preview_id = "your_preview_kv_namespace_id"
+
+# R2 Storage for assets
+[[r2_buckets]]
+binding = "ASSETS_BUCKET"
+id = "your_r2_bucket_id"
+
+# D1 Database for persistent data
+[[d1_databases]]
+binding = "DB"
+database_name = "voxel_ai_db"
+database_id = "your_d1_database_id"
+
+# Environment-specific configurations
+
+[env.development]
+name = "voxel-ai-worker-dev"
+vars = { ENVIRONMENT = "development" }
+
+[env.development.kv_namespaces]
+binding = "CACHE"
+id = "your_dev_kv_namespace_id"
+
+[env.development.r2_buckets]
+binding = "ASSETS_BUCKET"
+id = "your_dev_r2_bucket_id"
+
+[env.development.d1_databases]
+binding = "DB"
+database_name = "voxel_ai_db_dev"
+database_id = "your_dev_d1_database_id"
+
+# Production configuration
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.production.kv_namespaces]
+binding = "CACHE"
+id = "your_prod_kv_namespace_id"
+
+[env.production.r2_buckets]
+binding = "ASSETS_BUCKET"
+id = "your_prod_r2_bucket_id"
+
+[env.production.d1_databases]
+binding = "DB"
+database_name = "voxel_ai_db"
+database_id = "your_prod_d1_database_id"
+
+# Scheduled tasks (cron triggers)
+
+[tls]
+mtls = "off"

@@ -1,0 +1,46 @@
+{
+  "name": "@dmlog/memory",
+  "version": "1.0.0",
+  "description": "DMLoG.AI Memory System - 6-tier hierarchical memory with temporal consciousness for TTRPG characters",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "dmlog",
+    "ttrpg",
+    "memory",
+    "ai",
+    "dnd",
+    "pathfinder",
+    "character"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
