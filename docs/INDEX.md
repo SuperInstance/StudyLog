@@ -74,6 +74,25 @@ POST /api/v1/assets/upload
 
 ---
 
+## Agents & Characters
+
+- [Agents Index](agents/INDEX.md) - Agent and character system documentation
+- [AI Character Integration Guide](agents/AI_CHARACTER_INTEGRATION_GUIDE.md) - Master integration guide for unified character system
+
+### Character System Components
+
+- **Personality System** - Trait-based behavior modification
+- **Memory System** - Hierarchical memory with consolidation
+- **Decision Engine** - Three-tier routing (bot/brain/human)
+- **Learning System** - Outcome tracking and reinforcement
+
+### Product Applications
+
+- **StudyLoG.AI** - Tutor characters, learning trackers, mentor NPCs
+- **DMLoG.AI** - Combat bots, social NPCs, DM assistants
+
+---
+
 ## Project Documentation
 
 - [IMPLEMENTATION.md](../IMPLEMENTATION.md) - Current implementation status and phase details

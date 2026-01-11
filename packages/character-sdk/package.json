@@ -1,0 +1,56 @@
+{
+  "name": "@studylog/character-sdk",
+  "version": "1.0.0",
+  "description": "SDK-inspired character system for StudyLoG.AI - unified API for AI agents with memory, personality, and learning",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./core": {
+      "import": "./dist/core/index.js",
+      "types": "./dist/core/index.d.ts"
+    },
+    "./memory": {
+      "import": "./dist/memory/index.js",
+      "types": "./dist/memory/index.d.ts"
+    },
+    "./decision": {
+      "import": "./dist/decision/index.js",
+      "types": "./dist/decision/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "character",
+    "memory",
+    "personality",
+    "learning",
+    "sdk",
+    "studylog"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.7.0",
+    "vitest": "^1.2.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "si-outcome-tracker",
+  "version": "1.0.0",
+  "description": "Multi-domain outcome tracking for StudyLoG.AI learning analytics",
+  "keywords": [
+    "studylog",
+    "outcome",
+    "tracking",
+    "analytics",
+    "gamification"
+  ],
+  "license": "MIT",
+  "author": "SuperInstance.AI",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/si-outcome-tracker-frontend-module",
+      "backend": "lib/node/si-outcome-tracker-backend-module"
+    }
+  ],
+  "dependencies": {
+    "@theia/core": "latest",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf lib"
+  }
+}

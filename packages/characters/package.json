@@ -1,0 +1,34 @@
+{
+  "name": "@studylog/characters",
+  "version": "1.0.0",
+  "description": "AI Character System for StudyLoG.AI - Personality-driven characters with hierarchical memory",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "keywords": [
+    "ai",
+    "character",
+    "personality",
+    "memory",
+    "tutor",
+    "education"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.7.2",
+    "vitest": "^1.2.0"
+  },
+  "files": [
+    "lib",
+    "src"
+  ]
+}

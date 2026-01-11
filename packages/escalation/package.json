@@ -1,0 +1,30 @@
+{
+  "name": "@studylog/escalation",
+  "version": "1.0.0",
+  "description": "Intelligent decision routing for cost-optimized AI usage in StudyLoG.AI",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "escalation",
+    "ai-routing",
+    "cost-optimization",
+    "studylog"
+  ],
+  "author": "SuperInstance.AI",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.5",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  }
+}
